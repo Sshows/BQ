@@ -157,7 +157,6 @@ export default async function BqFilmsPage() {
                       fill
                       className="object-cover"
                       sizes="(max-width: 1024px) 100vw, 33vw"
-                      unoptimized
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-80 group-hover:opacity-60 transition-opacity" />
                   </div>

@@ -94,7 +94,7 @@ export default function ConsultForm() {
               <div>
                 <label
                   htmlFor="name"
-                  className="block text-sm text-bq-muted mb-2"
+                  className="label"
                 >
                   Имя
                 </label>
@@ -103,14 +103,14 @@ export default function ConsultForm() {
                   id="name"
                   name="name"
                   required
-                  className="w-full px-4 py-3 bg-bq-dark border border-white/10 rounded-lg text-bq-white focus:border-bq-accent focus:outline-none transition-colors"
+                  className="input"
                   placeholder="Ваше имя"
                 />
               </div>
               <div>
                 <label
                   htmlFor="phone"
-                  className="block text-sm text-bq-muted mb-2"
+                  className="label"
                 >
                   Телефон
                 </label>
@@ -119,7 +119,7 @@ export default function ConsultForm() {
                   id="phone"
                   name="phone"
                   required
-                  className="w-full px-4 py-3 bg-bq-dark border border-white/10 rounded-lg text-bq-white focus:border-bq-accent focus:outline-none transition-colors"
+                  className="input"
                   placeholder="+7 ..."
                 />
               </div>
@@ -128,7 +128,7 @@ export default function ConsultForm() {
             <div>
               <label
                 htmlFor="service"
-                className="block text-sm text-bq-muted mb-2"
+                className="label"
               >
                 Направление
               </label>
@@ -136,7 +136,7 @@ export default function ConsultForm() {
                 id="service"
                 name="service"
                 required
-                className="w-full px-4 py-3 bg-bq-dark border border-white/10 rounded-lg text-bq-white focus:border-bq-accent focus:outline-none transition-colors appearance-none"
+                className="input appearance-none"
               >
                 <option value="">Выберите направление</option>
                 {services.map((s) => (
@@ -150,7 +150,7 @@ export default function ConsultForm() {
             <div>
               <label
                 htmlFor="message"
-                className="block text-sm text-bq-muted mb-2"
+                className="label"
               >
                 Сообщение
               </label>
@@ -158,7 +158,7 @@ export default function ConsultForm() {
                 id="message"
                 name="message"
                 rows={4}
-                className="w-full px-4 py-3 bg-bq-dark border border-white/10 rounded-lg text-bq-white focus:border-bq-accent focus:outline-none transition-colors resize-none"
+                className="input resize-none"
                 placeholder="Расскажите о вашем проекте..."
               />
             </div>
@@ -166,7 +166,7 @@ export default function ConsultForm() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 bg-bq-accent text-bq-black font-semibold rounded-lg hover:bg-amber-400 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50"
+              className="btn btn-primary w-full py-4 disabled:opacity-50"
             >
               {loading ? (
                 "Отправка..."

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
@@ -16,27 +17,37 @@ const navLinks = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div className="container-bq py-4 flex items-center justify-between">
         <Link href="/" className="text-2xl font-bold tracking-tight">
           <span className="text-bq-accent">BQ</span>
         </Link>
 
         <div className="hidden lg:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm text-bq-white/70 hover:text-bq-accent transition-colors duration-300 tracking-wide"
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            const isHash = link.href.startsWith("/#");
+            const isActive = !isHash && pathname === link.href;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`text-sm tracking-wide transition-colors duration-300 ${
+                  isActive
+                    ? "text-bq-accent"
+                    : "text-bq-white/70 hover:text-bq-accent"
+                }`}
+                aria-current={isActive ? "page" : undefined}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
           <Link
             href="/#consult"
-            className="ml-4 px-5 py-2.5 bg-bq-accent text-bq-black text-sm font-semibold rounded hover:bg-amber-400 transition-colors duration-300"
+            className="ml-4 btn btn-primary"
           >
             Консультация
           </Link>
@@ -44,8 +55,9 @@ export default function Navbar() {
 
         <button
           onClick={() => setOpen(!open)}
-          className="lg:hidden text-bq-white/70 hover:text-bq-accent transition-colors"
+          className="lg:hidden text-bq-white/70 hover:text-bq-accent transition-colors rounded-lg p-2"
           aria-label="Toggle menu"
+          aria-expanded={open}
         >
           {open ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -53,21 +65,30 @@ export default function Navbar() {
 
       {open && (
         <div className="lg:hidden glass border-t border-white/10">
-          <div className="px-6 py-6 flex flex-col gap-4">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setOpen(false)}
-                className="text-bq-white/70 hover:text-bq-accent transition-colors text-lg"
-              >
-                {link.label}
-              </Link>
-            ))}
+          <div className="container-bq py-6 flex flex-col gap-3">
+            {navLinks.map((link) => {
+              const isHash = link.href.startsWith("/#");
+              const isActive = !isHash && pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  className={`rounded-xl px-4 py-3 transition-colors text-base ${
+                    isActive
+                      ? "bg-white/5 text-bq-accent"
+                      : "text-bq-white/80 hover:bg-white/5 hover:text-bq-accent"
+                  }`}
+                  aria-current={isActive ? "page" : undefined}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
             <Link
               href="/#consult"
               onClick={() => setOpen(false)}
-              className="mt-2 px-5 py-3 bg-bq-accent text-bq-black text-center font-semibold rounded hover:bg-amber-400 transition-colors"
+              className="mt-2 btn btn-primary w-full"
             >
               Консультация
             </Link>
