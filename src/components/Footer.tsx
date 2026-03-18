@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Instagram, Phone, MapPin, Mail, Github } from "lucide-react";
+import { Instagram, Phone, MapPin, Mail } from "lucide-react";
 
 const directions = [
   { href: "/media", label: "BQ Media" },
@@ -28,7 +28,6 @@ const socials = [
     label: "BQ Production",
     icon: Instagram,
   },
-  { href: "https://github.com/Sshows/BQ.git", label: "GitHub", icon: Github },
 ];
 
 export default function Footer() {

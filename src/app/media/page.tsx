@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import DirectionPage from "@/components/DirectionPage";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "BQ Media — Фото- и видеосъёмка под ключ | BQ",
@@ -65,7 +66,58 @@ export default function MediaPage() {
             a: "Да, мы выезжаем на съёмки по всему Казахстану и за рубеж.",
           },
         ]}
-      />
+      >
+        <section className="py-24 bg-bq-black">
+          <div className="container-bq">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-bq-accent text-sm uppercase tracking-[0.3em] mb-3">
+                  BQ Media
+                </p>
+                <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+                  Love Story — портфолио
+                </h2>
+                <p className="mt-3 text-bq-white/60 max-w-2xl">
+                  Подборка кадров из love story съёмок. Нажми на фото, чтобы
+                  открыть в полном размере.
+                </p>
+              </div>
+              <a href="/#consult" className="btn btn-primary w-full sm:w-auto">
+                Записаться на съёмку
+              </a>
+            </div>
+
+            <div className="mt-10 grid gap-4 sm:gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+              {[
+                "/images/portfolio/bqmedia/portfolio-1.png",
+                "/images/portfolio/bqmedia/portfolio-2.png",
+                "/images/portfolio/bqmedia/portfolio-3.png",
+                "/images/portfolio/bqmedia/portfolio-4.png",
+                "/images/portfolio/bqmedia/portfolio-5.png",
+                "/images/portfolio/bqmedia/portfolio-6.png",
+                "/images/portfolio/bqmedia/portfolio-7.png",
+              ].map((src, i) => (
+                <a
+                  key={src}
+                  href={src}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative aspect-[3/4] overflow-hidden rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition-colors"
+                >
+                  <Image
+                    src={src}
+                    alt={`BQ Media portfolio ${i + 1}`}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-70" />
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+      </DirectionPage>
       <Footer />
     </>
   );
