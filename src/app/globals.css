@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --bq-black: #0A0A0A;
+  --bq-dark: #111111;
+  --bq-gray: #1A1A1A;
+  --bq-muted: #888888;
+  --bq-accent: #E8C547;
+  --bq-white: #F5F5F5;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bq-black);
+  color: var(--bq-white);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: var(--bq-accent);
+  color: var(--bq-black);
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-bq-accent to-amber-300;
+  }
+
+  .glass {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+  }
+
+  .hover-lift {
+    @apply transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl;
+  }
+}
