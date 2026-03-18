@@ -106,7 +106,7 @@ async function getChannelVideos(): Promise<YoutubeVideo[] | null> {
 
 export default async function BqFilmsPage() {
   const channelUrl =
-    "https://youtube.com/@bqproductionkz2026?si=OgK3pCbrXIN5ZDlu";
+    "https://youtube.com/@bqproductionkz2026?si=nS_51P_ZsGQ_69GJ";
   const videos = await getChannelVideos();
 
   return (

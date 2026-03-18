@@ -19,7 +19,7 @@ export default function Founder() {
             <div className="aspect-[3/4] rounded-2xl bg-bq-gray overflow-hidden relative">
               <div className="absolute inset-0 bg-gradient-to-t from-bq-black/60 to-transparent" />
               <Image
-                src="/images/founder/buti-portrait.png"
+                src="/images/founder/buti-portrait-v2.png"
                 alt="Основатель BQ"
                 fill
                 className="object-cover"

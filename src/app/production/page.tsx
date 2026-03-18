@@ -45,7 +45,10 @@ export default function ProductionPage() {
             desc: "BQ Production владеет правами на свои проекты. Это интеллектуальная собственность бренда.",
           },
         ]}
-        cta={{ label: "Смотреть проекты", href: "https://www.youtube.com/@bqproduction" }}
+        cta={{
+          label: "Смотреть проекты",
+          href: "https://youtube.com/@bqproductionkz2026?si=nS_51P_ZsGQ_69GJ",
+        }}
         secondaryCta={{ label: "Предложить коллаборацию", href: "/#consult" }}
         faq={[
           {
