@@ -52,6 +52,28 @@ function parseYoutubeRss(xml: string): YoutubeVideo[] {
   return Array.from(unique.values());
 }
 
+async function fetchTextWithFallback(url: string): Promise<string | null> {
+  const headers = { "user-agent": "BQFILMS/1.0 (+nextjs)" };
+
+  try {
+    const res = await fetch(url, { next: { revalidate: 3600 }, headers });
+    if (res.ok) return await res.text();
+  } catch {
+    // ignore
+  }
+
+  // Fallback: fetch through r.jina.ai to reduce blocking.
+  try {
+    const jinaUrl = `https://r.jina.ai/${url}`;
+    const res = await fetch(jinaUrl, { next: { revalidate: 3600 }, headers });
+    if (res.ok) return await res.text();
+  } catch {
+    // ignore
+  }
+
+  return null;
+}
+
 async function getChannelVideos(): Promise<YoutubeVideo[] | null> {
   const envChannelId = process.env.NEXT_PUBLIC_BQFILMS_CHANNEL_ID?.trim();
   const handle = "bqproductionkz2026";
@@ -59,22 +81,16 @@ async function getChannelVideos(): Promise<YoutubeVideo[] | null> {
   const channelId =
     envChannelId ??
     (await (async () => {
-      try {
-        const res = await fetch(`https://www.youtube.com/@${handle}`, {
-          next: { revalidate: 3600 },
-          headers: { "user-agent": "BQFILMS/1.0 (+nextjs)" },
-        });
-        if (!res.ok) return null;
-        const html = await res.text();
+      const html = await fetchTextWithFallback(`https://www.youtube.com/@${handle}`);
+      if (!html) return null;
 
-        const fromJson = html.match(/"channelId":"(UC[^"]+)"/)?.[1]?.trim();
-        if (fromJson) return fromJson;
+      const fromJson = html.match(/"channelId":"(UC[^"]+)"/)?.[1]?.trim();
+      if (fromJson) return fromJson;
 
-        const fromUrl = html.match(/https:\/\/www\.youtube\.com\/channel\/(UC[\w-]+)/)?.[1]?.trim();
-        return fromUrl ?? null;
-      } catch {
-        return null;
-      }
+      const fromUrl = html
+        .match(/https:\/\/www\.youtube\.com\/channel\/(UC[\w-]+)/)?.[1]
+        ?.trim();
+      return fromUrl ?? null;
     })());
 
   if (!channelId) return null;
@@ -83,13 +99,8 @@ async function getChannelVideos(): Promise<YoutubeVideo[] | null> {
     channelId
   )}`;
 
-  const res = await fetch(rssUrl, {
-    next: { revalidate: 3600 },
-    headers: { "user-agent": "BQFILMS/1.0 (+nextjs)" },
-  });
-
-  if (!res.ok) return null;
-  const xml = await res.text();
+  const xml = await fetchTextWithFallback(rssUrl);
+  if (!xml) return null;
   return parseYoutubeRss(xml);
 }
 
