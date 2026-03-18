@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Instagram, Youtube } from "lucide-react";
+import Image from "next/image";
+import { Instagram } from "lucide-react";
 
 export default function Founder() {
   return (
@@ -17,9 +18,14 @@ export default function Founder() {
           <div className="relative">
             <div className="aspect-[3/4] rounded-2xl bg-bq-gray overflow-hidden relative">
               <div className="absolute inset-0 bg-gradient-to-t from-bq-black/60 to-transparent" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-6xl font-bold text-bq-accent/20">BQ</span>
-              </div>
+              <Image
+                src="/images/founder/buti.jpg"
+                alt="Основатель BQ"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                priority
+              />
             </div>
             <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-bq-accent/10 rounded-full blur-2xl" />
           </div>

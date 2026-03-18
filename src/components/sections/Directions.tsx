@@ -52,6 +52,14 @@ const directions = [
     cta: "Смотреть проекты",
     accent: "from-red-500/20 to-rose-500/20",
   },
+  {
+    icon: Film,
+    title: "BQFILMS",
+    desc: "Все серии и выпуски BQ — с превью и быстрым переходом на YouTube.",
+    href: "/bqfilms",
+    cta: "Открыть серии",
+    accent: "from-white/10 to-bq-gray/10",
+  },
 ];
 
 export default function Directions() {

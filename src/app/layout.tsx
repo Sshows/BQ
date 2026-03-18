@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import PageTransition from "@/components/PageTransition";
 
 export const metadata: Metadata = {
   title: "BQ — Экосистема фото, видео и медиа в Казахстане",
@@ -32,7 +33,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ru">
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <PageTransition>{children}</PageTransition>
+      </body>
     </html>
   );
 }

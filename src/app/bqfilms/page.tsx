@@ -53,7 +53,30 @@ function parseYoutubeRss(xml: string): YoutubeVideo[] {
 }
 
 async function getChannelVideos(): Promise<YoutubeVideo[] | null> {
-  const channelId = process.env.NEXT_PUBLIC_BQFILMS_CHANNEL_ID?.trim();
+  const envChannelId = process.env.NEXT_PUBLIC_BQFILMS_CHANNEL_ID?.trim();
+  const handle = "bqproductionkz2026";
+
+  const channelId =
+    envChannelId ??
+    (await (async () => {
+      try {
+        const res = await fetch(`https://www.youtube.com/@${handle}`, {
+          next: { revalidate: 3600 },
+          headers: { "user-agent": "BQFILMS/1.0 (+nextjs)" },
+        });
+        if (!res.ok) return null;
+        const html = await res.text();
+
+        const fromJson = html.match(/"channelId":"(UC[^"]+)"/)?.[1]?.trim();
+        if (fromJson) return fromJson;
+
+        const fromUrl = html.match(/https:\/\/www\.youtube\.com\/channel\/(UC[\w-]+)/)?.[1]?.trim();
+        return fromUrl ?? null;
+      } catch {
+        return null;
+      }
+    })());
+
   if (!channelId) return null;
 
   const rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${encodeURIComponent(
@@ -106,18 +129,16 @@ export default async function BqFilmsPage() {
           {!videos ? (
             <div className="mt-10 rounded-xl border border-white/10 bg-white/5 p-6 text-bq-white/70">
               <p className="text-base">
-                Чтобы автоматически показать превью всех видео, добавь в{" "}
-                <span className="font-mono text-bq-white">
-                  .env
-                </span>{" "}
-                переменную{" "}
+                Не удалось загрузить список видео с YouTube (временная ошибка
+                или блокировка запроса). Кнопка на канал доступна выше.
+              </p>
+              <p className="mt-2 text-sm text-bq-white/60">
+                Если нужно, можно явно задать{" "}
                 <span className="font-mono text-bq-white">
                   NEXT_PUBLIC_BQFILMS_CHANNEL_ID
                 </span>{" "}
-                (YouTube channel_id вида <span className="font-mono text-bq-white">UC…</span>).
-              </p>
-              <p className="mt-2 text-sm text-bq-white/60">
-                Пока что доступна кнопка на канал выше.
+                (формат <span className="font-mono text-bq-white">UC…</span>) в
+                переменных окружения Vercel.
               </p>
             </div>
           ) : (
