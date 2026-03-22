@@ -3,14 +3,11 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
-
-const heroHighlights = [
-  "Съемка под ключ",
-  "Алматы и Астана",
-  "Команда + техника",
-];
+import { HOME_HERO_CONTENT } from "@/lib/content";
 
 export default function Hero() {
+  const [firstLine, secondLine] = HOME_HERO_CONTENT.title.split("\n");
+
   return (
     <section className="relative flex min-h-[100svh] items-center justify-center overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-bq-black via-bq-black/95 to-bq-dark" />
@@ -34,32 +31,36 @@ export default function Hero() {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <p className="mb-5 text-[11px] font-medium uppercase tracking-[0.26em] text-bq-accent sm:mb-6 sm:text-sm sm:tracking-[0.3em]">
-            Фото · Видео · Продакшн · Алматы и Астана
+            {HOME_HERO_CONTENT.eyebrow}
           </p>
 
           <h1 className="text-[clamp(2.75rem,10vw,5.7rem)] font-bold leading-[0.95] tracking-tight">
-            Снимаем проекты,
+            {firstLine},
             <br />
-            <span className="text-bq-white/90">которые хочется смотреть</span>
+            <span className="text-bq-white/90">{secondLine}</span>
           </h1>
 
           <p className="mx-auto mt-6 max-w-3xl text-base leading-relaxed text-bq-muted sm:mt-8 sm:text-xl">
-            Love story, reels, брендовые ролики, студийные форматы и
-            оригинальные проекты - собираем идею, команду, технику и результат
-            в одной системе.
+            {HOME_HERO_CONTENT.description}
           </p>
 
           <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:mt-10 sm:flex-row sm:items-center sm:gap-4">
-            <Link href="#consult" className="btn btn-primary w-full sm:w-auto">
-              Обсудить съемку
+            <Link
+              href={HOME_HERO_CONTENT.primaryCta.href}
+              className="btn btn-primary w-full sm:w-auto"
+            >
+              {HOME_HERO_CONTENT.primaryCta.label}
             </Link>
-            <Link href="/cases" className="btn btn-ghost w-full sm:w-auto">
-              Посмотреть кейсы
+            <Link
+              href={HOME_HERO_CONTENT.secondaryCta.href}
+              className="btn btn-ghost w-full sm:w-auto"
+            >
+              {HOME_HERO_CONTENT.secondaryCta.label}
             </Link>
           </div>
 
           <div className="mx-auto mt-8 grid max-w-3xl grid-cols-1 gap-3 sm:mt-10 sm:grid-cols-3">
-            {heroHighlights.map((item) => (
+            {HOME_HERO_CONTENT.highlights.map((item) => (
               <div
                 key={item}
                 className="rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-bq-white/75"

@@ -43,10 +43,7 @@ export async function POST(request: Request) {
   const message = sanitizeText(body.message, 1200);
 
   if (name.length < 2) {
-    return NextResponse.json(
-      { ok: false, error: "Укажите имя." },
-      { status: 400 }
-    );
+    return NextResponse.json({ ok: false, error: "Укажите имя." }, { status: 400 });
   }
 
   if (phone.replace(/\D/g, "").length < 10) {
@@ -81,6 +78,8 @@ export async function POST(request: Request) {
   const delivery = await deliverLead(payload);
 
   if (!delivery.ok) {
+    console.error("Lead delivery failed", delivery);
+
     return NextResponse.json(
       {
         ok: false,
@@ -91,8 +90,17 @@ export async function POST(request: Request) {
     );
   }
 
+  if (delivery.mode === "partial" || delivery.mode === "disabled") {
+    console.warn("Lead delivery warning", delivery);
+  }
+
   return NextResponse.json({
     ok: true,
-    channels: delivery.channels.length > 0 ? delivery.channels : ["disabled"],
+    channels:
+      delivery.successfulChannels.length > 0
+        ? delivery.successfulChannels
+        : ["disabled"],
+    deliveryMode: delivery.mode,
+    warnings: delivery.warnings,
   });
 }

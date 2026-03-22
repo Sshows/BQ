@@ -1,15 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-
-const stats = [
-  { value: "5", label: "направлений" },
-  { value: "215+", label: "единиц техники" },
-  { value: "2", label: "города" },
-  { value: "1", label: "команда полного цикла" },
-];
+import { ABOUT_CONTENT } from "@/lib/content";
 
 export default function About() {
+  const [firstLine, secondLine] = ABOUT_CONTENT.title.split("\n");
+
   return (
     <section id="about" className="section-pad bg-bq-dark">
       <div className="container-bq max-w-5xl">
@@ -21,22 +17,20 @@ export default function About() {
           className="text-center"
         >
           <p className="mb-4 text-sm uppercase tracking-[0.3em] text-bq-accent">
-            О BQ
+            {ABOUT_CONTENT.eyebrow}
           </p>
           <h2 className="text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl">
-            Одна команда для съемки,
+            {firstLine},
             <br />
-            <span className="text-bq-white/60">техники и продакшна</span>
+            <span className="text-bq-white/60">{secondLine}</span>
           </h2>
           <p className="mx-auto mt-8 max-w-3xl text-lg leading-relaxed text-bq-muted">
-            BQ - это не один подрядчик, а связанная система направлений.
-            Съемка, аренда, магазин техники, студия и production работают
-            вместе, чтобы проект не рассыпался между разными исполнителями.
+            {ABOUT_CONTENT.description}
           </p>
         </motion.div>
 
         <div className="mt-16 grid grid-cols-2 gap-8 text-center sm:mt-20 sm:grid-cols-4">
-          {stats.map((stat, index) => (
+          {ABOUT_CONTENT.stats.map((stat, index) => (
             <motion.div
               key={stat.label}
               initial={{ opacity: 0, y: 20 }}

@@ -12,12 +12,22 @@ export type LeadPayload = {
   ip: string;
 };
 
-type DeliveryChannel = "google-sheets" | "telegram";
+export type DeliveryChannel = "google-sheets" | "telegram";
+export type LeadDeliveryMode = "disabled" | "delivered" | "partial" | "failed";
 
 type DeliveryResult = {
   channel: DeliveryChannel;
   ok: boolean;
   error?: string;
+};
+
+export type LeadDeliveryResult = {
+  ok: boolean;
+  mode: LeadDeliveryMode;
+  attemptedChannels: DeliveryChannel[];
+  successfulChannels: DeliveryChannel[];
+  failedChannels: DeliveryChannel[];
+  warnings: string[];
 };
 
 function getTimeoutSignal(timeoutMs: number) {
@@ -134,7 +144,9 @@ async function sendTelegram(
   }
 }
 
-export async function deliverLead(payload: LeadPayload) {
+export async function deliverLead(
+  payload: LeadPayload
+): Promise<LeadDeliveryResult> {
   const googleSheetsUrl =
     process.env.GOOGLE_SHEETS_URL?.trim() ||
     process.env.NEXT_PUBLIC_GOOGLE_SHEETS_URL?.trim();
@@ -142,36 +154,70 @@ export async function deliverLead(payload: LeadPayload) {
   const telegramChatId = process.env.TELEGRAM_CHAT_ID?.trim();
 
   const tasks: Promise<DeliveryResult>[] = [];
+  const attemptedChannels: DeliveryChannel[] = [];
 
   if (googleSheetsUrl) {
+    attemptedChannels.push("google-sheets");
     tasks.push(sendGoogleSheets(payload, googleSheetsUrl));
   }
 
   if (telegramBotToken && telegramChatId) {
+    attemptedChannels.push("telegram");
     tasks.push(sendTelegram(payload, telegramBotToken, telegramChatId));
   }
 
   if (tasks.length === 0) {
-    return { ok: true, channels: [] as DeliveryChannel[], mode: "disabled" };
+    return {
+      ok: true,
+      mode: "disabled",
+      attemptedChannels: [],
+      successfulChannels: [],
+      failedChannels: [],
+      warnings: [
+        "Каналы доставки не настроены. Для рабочих заявок подключите Telegram или Google Sheets.",
+      ],
+    };
   }
 
   const results = await Promise.all(tasks);
-  const successful = results.filter((result) => result.ok);
+  const successfulChannels = results
+    .filter((result) => result.ok)
+    .map((result) => result.channel);
+  const failedChannels = results
+    .filter((result) => !result.ok)
+    .map((result) => result.channel);
+  const warnings = results
+    .map((result) => result.error)
+    .filter((message): message is string => Boolean(message));
 
-  if (successful.length === 0) {
+  if (successfulChannels.length === 0) {
     return {
       ok: false,
-      channels: [] as DeliveryChannel[],
-      errors: results.map((result) => result.error).filter(Boolean),
+      mode: "failed",
+      attemptedChannels,
+      successfulChannels: [],
+      failedChannels,
+      warnings,
+    };
+  }
+
+  if (failedChannels.length > 0) {
+    return {
+      ok: true,
+      mode: "partial",
+      attemptedChannels,
+      successfulChannels,
+      failedChannels,
+      warnings,
     };
   }
 
   return {
     ok: true,
-    channels: successful.map((result) => result.channel),
-    errors: results
-      .filter((result) => !result.ok)
-      .map((result) => result.error)
-      .filter(Boolean),
+    mode: "delivered",
+    attemptedChannels,
+    successfulChannels,
+    failedChannels: [],
+    warnings,
   };
 }

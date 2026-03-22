@@ -2,15 +2,32 @@
 
 import { FormEvent, useState } from "react";
 import { motion } from "framer-motion";
-import { CheckCircle, MessageCircle, Send } from "lucide-react";
+import {
+  CheckCircle,
+  MessageCircle,
+  Phone,
+  RotateCcw,
+  Send,
+} from "lucide-react";
+import { CONSULT_CONTENT } from "@/lib/content";
 import { WHATSAPP_URL } from "@/lib/site";
 import { SERVICE_OPTIONS } from "@/lib/services";
 
 type FormStatus = "idle" | "submitting" | "success" | "error";
+type DeliveryMode = "disabled" | "delivered" | "partial";
+
+const CHANNEL_LABELS: Record<string, string> = {
+  telegram: "Telegram",
+  "google-sheets": "таблица",
+  disabled: "веб-форма",
+};
 
 export default function ConsultForm() {
   const [status, setStatus] = useState<FormStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [deliveryMode, setDeliveryMode] = useState<DeliveryMode>("disabled");
+  const [deliveryChannels, setDeliveryChannels] = useState<string[]>([]);
+  const [deliveryWarnings, setDeliveryWarnings] = useState<string[]>([]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -38,6 +55,9 @@ export default function ConsultForm() {
       const result = (await response.json()) as {
         ok?: boolean;
         error?: string;
+        channels?: string[];
+        deliveryMode?: DeliveryMode;
+        warnings?: string[];
       };
 
       if (!response.ok || !result.ok) {
@@ -48,6 +68,9 @@ export default function ConsultForm() {
       }
 
       form.reset();
+      setDeliveryMode(result.deliveryMode ?? "disabled");
+      setDeliveryChannels(result.channels ?? []);
+      setDeliveryWarnings(result.warnings ?? []);
       setStatus("success");
     } catch (error) {
       setStatus("error");
@@ -60,6 +83,13 @@ export default function ConsultForm() {
   }
 
   if (status === "success") {
+    const successMessage =
+      deliveryMode === "disabled"
+        ? "Заявка принята на сайте. Чтобы ускорить ответ, можно сразу написать нам в WhatsApp."
+        : deliveryMode === "partial"
+          ? "Заявка уже передана команде BQ. Один из внутренних каналов сработал неидеально, поэтому для срочных задач лучше продублировать запрос в WhatsApp."
+          : "Заявка уже передана команде BQ. Мы посмотрим задачу и вернемся к вам с удобным форматом работы.";
+
     return (
       <section id="consult" className="section-pad bg-bq-black">
         <div className="container-bq max-w-2xl text-center">
@@ -71,19 +101,46 @@ export default function ConsultForm() {
           >
             <CheckCircle size={64} className="mx-auto mb-6 text-bq-accent" />
             <h2 className="mb-4 text-3xl font-bold">Заявка принята</h2>
-            <p className="text-bq-muted">
-              Мы свяжемся с вами в ближайшее время. Если вопрос срочный, можно
-              сразу написать нам в WhatsApp.
-            </p>
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-primary mt-8 w-full sm:w-auto"
-            >
-              <MessageCircle size={16} />
-              Написать в WhatsApp
-            </a>
+            <p className="text-bq-muted">{successMessage}</p>
+
+            {deliveryChannels.length > 0 ? (
+              <div className="mt-6 flex flex-wrap justify-center gap-2">
+                {deliveryChannels.map((channel) => (
+                  <span
+                    key={channel}
+                    className="rounded-full border border-bq-accent/25 bg-bq-accent/10 px-3 py-1 text-xs text-bq-accent"
+                  >
+                    {CHANNEL_LABELS[channel] ?? channel}
+                  </span>
+                ))}
+              </div>
+            ) : null}
+
+            {deliveryWarnings.length > 0 ? (
+              <p className="mt-4 text-sm text-bq-white/45">
+                {deliveryWarnings.join(" ")}
+              </p>
+            ) : null}
+
+            <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+              <button
+                type="button"
+                onClick={() => setStatus("idle")}
+                className="btn btn-ghost w-full sm:w-auto"
+              >
+                <RotateCcw size={16} />
+                Описать еще проект
+              </button>
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-primary w-full sm:w-auto"
+              >
+                <MessageCircle size={16} />
+                Написать в WhatsApp
+              </a>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -101,15 +158,43 @@ export default function ConsultForm() {
         >
           <div className="mb-10 text-center sm:mb-12">
             <p className="mb-4 text-sm uppercase tracking-[0.3em] text-bq-accent">
-              Заявка
+              {CONSULT_CONTENT.eyebrow}
             </p>
             <h2 className="text-3xl font-bold sm:text-4xl lg:text-5xl">
-              Обсудить проект
+              {CONSULT_CONTENT.title}
             </h2>
-            <p className="mt-4 text-bq-muted">
-              Напишите пару деталей о задаче - мы быстро свяжемся с вами и
-              подскажем удобный формат работы.
-            </p>
+            <p className="mt-4 text-bq-muted">{CONSULT_CONTENT.description}</p>
+          </div>
+
+          <div className="mb-8 grid gap-3 sm:grid-cols-3">
+            {CONSULT_CONTENT.hints.map((hint) => (
+              <div
+                key={hint}
+                className="rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-bq-white/72"
+              >
+                {hint}
+              </div>
+            ))}
+          </div>
+
+          <div className="mb-8 flex flex-col gap-3 sm:flex-row">
+            {CONSULT_CONTENT.secondaryActions.map((action) => {
+              const isPhone = action.href.startsWith("tel:");
+              const Icon = isPhone ? Phone : MessageCircle;
+
+              return (
+                <a
+                  key={action.label}
+                  href={action.href}
+                  target={action.external ? "_blank" : undefined}
+                  rel={action.external ? "noopener noreferrer" : undefined}
+                  className="btn btn-ghost w-full sm:w-auto"
+                >
+                  <Icon size={16} />
+                  {action.label}
+                </a>
+              );
+            })}
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -191,7 +276,7 @@ export default function ConsultForm() {
                 rows={5}
                 maxLength={1200}
                 className="input min-h-[140px] resize-none"
-                placeholder="Опишите формат, сроки, город съемки или то, что хотите снять."
+                placeholder="Опишите формат, сроки, город съемки или то, что хотите получить на выходе."
               />
             </div>
 
@@ -219,7 +304,7 @@ export default function ConsultForm() {
               className="btn btn-primary w-full disabled:cursor-not-allowed disabled:opacity-60"
             >
               {status === "submitting" ? (
-                "Отправка..."
+                "Отправляем..."
               ) : (
                 <>
                   Отправить заявку

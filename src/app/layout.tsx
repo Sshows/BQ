@@ -1,16 +1,19 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Manrope } from "next/font/google";
+import MobileStickyActions from "@/components/MobileStickyActions";
 import PageTransition from "@/components/PageTransition";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://bqmedia-kz.vercel.app"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "BQ - съемка, продакшн и студийные проекты в Казахстане",
-    template: "%s | BQ",
+    default: `${SITE_NAME} - съемка, продакшн и студийные проекты в Казахстане`,
+    template: `%s | ${SITE_NAME}`,
   },
-  description:
-    "BQ объединяет съемку, аренду и продажу техники, студию и продакшн для брендов, экспертов и частных проектов в Алматы и Астане.",
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  creator: SITE_NAME,
   keywords: [
     "видеосъемка Алматы",
     "продакшн Казахстан",
@@ -24,19 +27,37 @@ export const metadata: Metadata = {
     "BQ Production",
   ],
   openGraph: {
-    title: "BQ - съемка, продакшн и студийные проекты в Казахстане",
+    title: `${SITE_NAME} - съемка, продакшн и студийные проекты в Казахстане`,
     description:
-      "Снимаем, оснащаем, записываем и выпускаем проекты - от love story и reels до сериалов и брендового контента.",
+      "Съемка, кейсы, reels, YouTube и быстрый путь к заявке в одной системе BQ.",
+    url: SITE_URL,
+    siteName: SITE_NAME,
     type: "website",
+    locale: "ru_KZ",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: `${SITE_NAME} - съемка и продакшн`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE_NAME} - съемка, продакшн и студийные проекты в Казахстане`,
+    description:
+      "Снимаем проекты под задачу: от love story и reels до подкастов, кейсов и YouTube-форматов.",
+    images: ["/twitter-image"],
   },
   alternates: {
     canonical: "/",
   },
 };
 
-export const viewport = {
+export const viewport: Viewport = {
   themeColor: "#0A0A0A",
-  colorScheme: "dark" as const,
+  colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
 };
@@ -61,9 +82,10 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <body
-        className={`font-sans antialiased ${fontSans.variable} ${fontDisplay.variable}`}
+        className={`font-sans antialiased pb-[92px] lg:pb-0 ${fontSans.variable} ${fontDisplay.variable}`}
       >
         <PageTransition>{children}</PageTransition>
+        <MobileStickyActions />
       </body>
     </html>
   );

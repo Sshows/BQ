@@ -5,8 +5,12 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import { CASE_STUDIES, getCaseStudyBySlug } from "@/lib/cases";
-import { SITE_URL, WHATSAPP_URL } from "@/lib/site";
+import {
+  CASE_STUDIES,
+  type CaseLink,
+  getCaseStudyBySlug,
+} from "@/lib/cases";
+import { SITE_NAME, SITE_URL, WHATSAPP_URL } from "@/lib/site";
 
 type CasePageProps = {
   params: Promise<{
@@ -30,6 +34,10 @@ export async function generateMetadata({
     };
   }
 
+  const imageUrl = caseStudy.heroImage.startsWith("http")
+    ? caseStudy.heroImage
+    : `${SITE_URL}${caseStudy.heroImage}`;
+
   return {
     title: `${caseStudy.title} - кейс`,
     description: caseStudy.cardDescription,
@@ -37,21 +45,45 @@ export async function generateMetadata({
       canonical: `/cases/${caseStudy.slug}`,
     },
     openGraph: {
-      title: `${caseStudy.title} | BQ`,
+      title: `${caseStudy.title} | ${SITE_NAME}`,
       description: caseStudy.cardDescription,
+      type: "article",
       images: [
         {
-          url: caseStudy.heroImage.startsWith("http")
-            ? caseStudy.heroImage
-            : `${SITE_URL}${caseStudy.heroImage}`,
+          url: imageUrl,
         },
       ],
     },
   };
 }
 
-function renderLinkClass(isPrimary: boolean) {
-  return isPrimary ? "btn btn-primary" : "btn btn-ghost";
+function renderAction(link: CaseLink, isPrimary: boolean) {
+  const className = isPrimary ? "btn btn-primary" : "btn btn-ghost";
+  const content = (
+    <>
+      {link.label}
+      {isPrimary ? <ArrowRight size={14} /> : null}
+    </>
+  );
+
+  if (link.external) {
+    return (
+      <a
+        href={link.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={className}
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={link.href} className={className}>
+      {content}
+    </Link>
+  );
 }
 
 export default async function CaseDetailPage({ params }: CasePageProps) {
@@ -62,10 +94,65 @@ export default async function CaseDetailPage({ params }: CasePageProps) {
     notFound();
   }
 
+  const currentIndex = CASE_STUDIES.findIndex((item) => item.slug === slug);
+  const nextCase = CASE_STUDIES[(currentIndex + 1) % CASE_STUDIES.length];
+  const imageUrl = caseStudy.heroImage.startsWith("http")
+    ? caseStudy.heroImage
+    : `${SITE_URL}${caseStudy.heroImage}`;
+
+  const creativeWorkSchema = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: caseStudy.title,
+    description: caseStudy.cardDescription,
+    url: `${SITE_URL}/cases/${caseStudy.slug}`,
+    image: [imageUrl, ...caseStudy.supportingImages],
+    creator: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+    keywords: [caseStudy.category, caseStudy.tag],
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Главная",
+        item: SITE_URL,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Кейсы",
+        item: `${SITE_URL}/cases`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: caseStudy.title,
+        item: `${SITE_URL}/cases/${caseStudy.slug}`,
+      },
+    ],
+  };
+
   return (
     <>
       <Navbar />
       <main className="bg-bq-black pt-24">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(creativeWorkSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        />
+
         <section className="section-pad pb-10">
           <div className="container-bq">
             <Link
@@ -89,27 +176,10 @@ export default async function CaseDetailPage({ params }: CasePageProps) {
                 </p>
 
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                  <Link
-                    href={caseStudy.primaryCta.href}
-                    className={renderLinkClass(true)}
-                  >
-                    {caseStudy.primaryCta.label}
-                    <ArrowRight size={14} />
-                  </Link>
-                  {caseStudy.secondaryCta ? (
-                    <a
-                      href={caseStudy.secondaryCta.href}
-                      target={caseStudy.secondaryCta.external ? "_blank" : undefined}
-                      rel={
-                        caseStudy.secondaryCta.external
-                          ? "noopener noreferrer"
-                          : undefined
-                      }
-                      className={renderLinkClass(false)}
-                    >
-                      {caseStudy.secondaryCta.label}
-                    </a>
-                  ) : null}
+                  {renderAction(caseStudy.primaryCta, true)}
+                  {caseStudy.secondaryCta
+                    ? renderAction(caseStudy.secondaryCta, false)
+                    : null}
                 </div>
 
                 <div className="mt-8 grid gap-4 sm:grid-cols-3">
@@ -219,28 +289,53 @@ export default async function CaseDetailPage({ params }: CasePageProps) {
           </div>
         </section>
 
-        <section className="section-pad bg-bq-black text-center">
-          <div className="container-bq max-w-2xl">
-            <h2 className="text-3xl font-bold sm:text-4xl">
-              Хотите похожий результат для своего проекта?
-            </h2>
-            <p className="mt-4 text-bq-muted">
-              Можно обсудить задачу через сайт или сразу перейти в WhatsApp,
-              если удобнее решать быстро.
-            </p>
-            <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-              <Link href="/#consult" className="btn btn-primary">
-                Оставить заявку
-              </Link>
-              <a
-                href={WHATSAPP_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-ghost"
-              >
-                Написать в WhatsApp
-              </a>
+        <section className="section-pad bg-bq-black">
+          <div className="container-bq grid gap-6 lg:grid-cols-2">
+            <div className="rounded-[30px] border border-white/10 bg-white/[0.04] p-8">
+              <p className="text-sm uppercase tracking-[0.3em] text-bq-accent">
+                Следующий шаг
+              </p>
+              <h2 className="mt-4 text-3xl font-bold sm:text-4xl">
+                Хотите похожий результат для своего проекта?
+              </h2>
+              <p className="mt-4 text-bq-muted">
+                Можно обсудить задачу через сайт или сразу перейти в WhatsApp,
+                если удобнее решать быстрее.
+              </p>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <Link href="/#consult" className="btn btn-primary">
+                  Оставить заявку
+                </Link>
+                <a
+                  href={WHATSAPP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-ghost"
+                >
+                  Написать в WhatsApp
+                </a>
+              </div>
             </div>
+
+            <Link
+              href={`/cases/${nextCase.slug}`}
+              className="group rounded-[30px] border border-white/10 bg-white/[0.04] p-8 transition-colors hover:border-bq-accent/25 hover:bg-white/[0.06]"
+            >
+              <p className="text-sm uppercase tracking-[0.3em] text-bq-accent">
+                Следующий кейс
+              </p>
+              <h2 className="mt-4 text-3xl font-bold sm:text-4xl">
+                {nextCase.title}
+              </h2>
+              <p className="mt-4 text-bq-muted">{nextCase.cardDescription}</p>
+              <div className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-bq-accent">
+                Открыть кейс
+                <ArrowRight
+                  size={14}
+                  className="transition-transform group-hover:translate-x-1"
+                />
+              </div>
+            </Link>
           </div>
         </section>
       </main>

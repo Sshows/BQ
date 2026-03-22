@@ -4,9 +4,14 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, MessageCircle, Phone, X } from "lucide-react";
 import WordmarkLogo from "@/components/WordmarkLogo";
-import { NAV_LINKS } from "@/lib/site";
+import {
+  CONTACT_PHONE_DISPLAY,
+  CONTACT_PHONE_HREF,
+  NAV_LINKS,
+  WHATSAPP_URL,
+} from "@/lib/site";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -27,11 +32,11 @@ export default function Navbar() {
 
   return (
     <nav className="fixed left-0 right-0 top-0 z-50">
-      <div className="glass border-b border-white/10">
-        <div className="container-bq flex min-h-[76px] items-center justify-between py-3">
+      <div className="border-b border-white/10 bg-bq-black/70 backdrop-blur-2xl">
+        <div className="container-bq flex min-h-[76px] items-center justify-between gap-4 py-3">
           <WordmarkLogo />
 
-          <div className="hidden items-center gap-8 lg:flex">
+          <div className="hidden items-center gap-7 xl:flex">
             {NAV_LINKS.map((link) => {
               const isHash = link.href.startsWith("/#");
               const isActive = !isHash && pathname === link.href;
@@ -51,14 +56,26 @@ export default function Navbar() {
                 </Link>
               );
             })}
-            <Link href="/#consult" className="btn btn-primary ml-4">
+          </div>
+
+          <div className="hidden items-center gap-3 xl:flex">
+            <a
+              href={CONTACT_PHONE_HREF}
+              className="inline-flex min-h-[48px] items-center rounded-xl border border-white/10 bg-white/[0.04] px-4 text-sm text-bq-white/72 transition-colors hover:text-bq-accent"
+            >
+              {CONTACT_PHONE_DISPLAY}
+            </a>
+            <Link
+              href="/#consult"
+              className="btn btn-primary min-h-[48px] px-4 py-3"
+            >
               Оставить заявку
             </Link>
           </div>
 
           <button
             onClick={() => setOpen((value) => !value)}
-            className="inline-flex min-h-[48px] min-w-[48px] items-center justify-center rounded-xl border border-white/10 bg-white/5 text-bq-white/80 transition-colors hover:text-bq-accent lg:hidden"
+            className="inline-flex min-h-[48px] min-w-[48px] items-center justify-center rounded-xl border border-white/10 bg-white/5 text-bq-white/80 transition-colors hover:text-bq-accent xl:hidden"
             aria-label={open ? "Закрыть меню" : "Открыть меню"}
             aria-expanded={open}
           >
@@ -74,7 +91,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.24, ease: "easeOut" }}
-            className="glass border-b border-white/10 lg:hidden"
+            className="border-b border-white/10 bg-[#0b0b0b]/95 backdrop-blur-2xl xl:hidden"
           >
             <div className="container-bq flex max-h-[calc(100svh-76px)] flex-col gap-3 overflow-y-auto py-5 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
               {NAV_LINKS.map((link) => {
@@ -97,6 +114,26 @@ export default function Navbar() {
                   </Link>
                 );
               })}
+
+              <div className="grid grid-cols-2 gap-3 pt-2">
+                <a
+                  href={WHATSAPP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex min-h-[54px] items-center justify-center gap-2 rounded-2xl border border-bq-accent/25 bg-bq-accent/10 px-4 text-sm font-medium text-bq-white transition-colors hover:border-bq-accent hover:text-bq-accent"
+                >
+                  <MessageCircle size={16} className="text-bq-accent" />
+                  WhatsApp
+                </a>
+                <a
+                  href={CONTACT_PHONE_HREF}
+                  className="flex min-h-[54px] items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-4 text-sm text-bq-white/85 transition-colors hover:border-bq-accent/30 hover:text-bq-accent"
+                >
+                  <Phone size={16} className="text-bq-accent" />
+                  Позвонить
+                </a>
+              </div>
+
               <Link
                 href="/#consult"
                 onClick={() => setOpen(false)}

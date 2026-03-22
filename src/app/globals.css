@@ -28,15 +28,43 @@ body {
   overflow-x: hidden;
   background-color: var(--bq-black);
   color: var(--bq-white);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  line-height: 1.5;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overscroll-behavior-x: none;
 }
 
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
 ::selection {
   background-color: var(--bq-accent);
   color: var(--bq-black);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0d0d0d;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(232, 197, 71, 0.35);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(232, 197, 71, 0.55);
 }
 
 @layer utilities {
@@ -59,6 +87,18 @@ body {
     min-height: 100svh;
   }
 
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display), var(--font-sans), system-ui, sans-serif;
+    letter-spacing: -0.03em;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
   a,
   button,
   input,
@@ -66,6 +106,13 @@ body {
   textarea {
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
   }
 
   :focus-visible {
@@ -95,35 +142,41 @@ body {
   }
 
   .section-pad {
-    @apply py-16 sm:py-24 lg:py-32;
+    @apply py-16 sm:py-20 lg:py-28;
   }
 
   .card {
-    @apply rounded-2xl border border-white/10 bg-white/5;
+    @apply rounded-[28px] border border-white/10 bg-white/[0.04];
   }
 
   .card-hover {
-    @apply transition-colors hover:bg-white/10;
+    @apply transition-colors hover:bg-white/[0.07];
   }
 
   .btn {
-    @apply inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-sm font-semibold transition-all duration-300 active:scale-[0.99];
+    @apply inline-flex min-h-[54px] items-center justify-center gap-2 rounded-2xl px-5 py-3.5 text-sm font-semibold transition-all duration-300 active:scale-[0.99];
   }
 
   .btn-primary {
-    @apply bg-bq-accent text-bq-black hover:bg-amber-400 hover:shadow-[0_18px_40px_rgba(232,197,71,0.15)];
+    @apply bg-bq-accent text-bq-black hover:bg-amber-400 hover:shadow-[0_18px_40px_rgba(232,197,71,0.18)];
   }
 
   .btn-ghost {
-    @apply border border-white/15 text-bq-white/80 hover:border-bq-accent/40 hover:text-bq-accent;
+    @apply border border-white/15 text-bq-white/80 hover:border-bq-accent/40 hover:bg-white/[0.03] hover:text-bq-accent;
   }
 
   .input {
-    @apply w-full min-h-[56px] rounded-xl border border-white/10 bg-bq-dark px-4 py-3 text-base text-bq-white placeholder:text-bq-white/35 transition-colors;
+    @apply w-full min-h-[58px] rounded-2xl border border-white/10 bg-bq-dark px-4 py-3 text-base text-bq-white placeholder:text-bq-white/35 transition-colors;
     @apply focus:border-bq-accent focus:outline-none;
   }
 
   .label {
     @apply mb-2 block text-sm text-bq-white/55;
+  }
+}
+
+@media (max-width: 640px) {
+  html {
+    scroll-padding-top: 80px;
   }
 }
