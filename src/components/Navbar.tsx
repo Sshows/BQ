@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
@@ -52,7 +52,7 @@ export default function Navbar() {
               );
             })}
             <Link href="/#consult" className="btn btn-primary ml-4">
-              Консультация
+              Оставить заявку
             </Link>
           </div>
 
@@ -102,7 +102,7 @@ export default function Navbar() {
                 onClick={() => setOpen(false)}
                 className="btn btn-primary mt-2 w-full"
               >
-                Консультация
+                Оставить заявку
               </Link>
             </div>
           </motion.div>

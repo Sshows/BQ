@@ -13,47 +13,42 @@ export type YoutubeVideo = {
 const fallbackVideos: YoutubeVideo[] = [
   {
     id: "VuPvcSRkrSY",
-    title:
-      "ДОСТАР СПОРТИКТАРМЕН БІРІКТІ! ДОС ЕМЕС СЕРИАЛ 2026 | 3 СЕРИЯ | ҚАЗАҚША СЕРИАЛ 2026",
+    title: "Дос емес - 5 серия",
     url: "https://www.youtube.com/watch?v=VuPvcSRkrSY",
     thumbnail: "https://i.ytimg.com/vi/VuPvcSRkrSY/hqdefault.jpg",
     publishedAt: "2026-03-14T00:00:00.000Z",
   },
   {
     id: "Cjt3PHRtiLU",
-    title:
-      "ДОСТАР БАНДИТТЕРГЕ ҰСТАЛАДЫ! ДОС ЕМЕС СЕРИАЛ 2026 | 4 СЕРИЯ | ҚАЗАҚША СЕРИАЛ 2026",
+    title: "Дос емес - 4 серия",
     url: "https://www.youtube.com/watch?v=Cjt3PHRtiLU",
     thumbnail: "https://i.ytimg.com/vi/Cjt3PHRtiLU/hqdefault.jpg",
     publishedAt: "2026-03-09T00:00:00.000Z",
   },
   {
     id: "KHPKPi1tCp8",
-    title:
-      "ДОСЫ САТЫП КЕТТІ! ДОС ЕМЕС СЕРИАЛ 2026 | 3 СЕРИЯ | ҚАЗАҚША СЕРИАЛ 2026",
+    title: "Дос емес - 3 серия",
     url: "https://www.youtube.com/watch?v=KHPKPi1tCp8",
     thumbnail: "https://i.ytimg.com/vi/KHPKPi1tCp8/hqdefault.jpg",
     publishedAt: "2026-03-04T00:00:00.000Z",
   },
   {
     id: "sYgDi_50c04",
-    title:
-      "ЕКІ ДОС ТІРЕСІП ҚАЛДЫ! ДОС ЕМЕС СЕРИАЛ 2026 | 2 СЕРИЯ | ҚАЗАҚША СЕРИАЛ 2026",
+    title: "Дос емес - 2 серия",
     url: "https://www.youtube.com/watch?v=sYgDi_50c04",
     thumbnail: "https://i.ytimg.com/vi/sYgDi_50c04/hqdefault.jpg",
     publishedAt: "2026-02-20T00:00:00.000Z",
   },
   {
     id: "pX-YThpE6Rc",
-    title:
-      "Доспен дұшпанның арасы - бір қадам | 1 СЕРИЯ | ДОС ЕМЕС СЕРИАЛ | СЕРИАЛ 2026",
+    title: "Дос емес - 1 серия",
     url: "https://www.youtube.com/watch?v=pX-YThpE6Rc",
     thumbnail: "https://i.ytimg.com/vi/pX-YThpE6Rc/hqdefault.jpg",
     publishedAt: "2026-02-08T00:00:00.000Z",
   },
   {
     id: "yN0X2o7YmEw",
-    title: "Имаш и Испанец бала - ДРАКА АКТАНА И ИСПАНЕЦ БАЛА",
+    title: "Имаш и Испанец бала",
     url: "https://www.youtube.com/watch?v=yN0X2o7YmEw",
     thumbnail: "https://i.ytimg.com/vi/yN0X2o7YmEw/hqdefault.jpg",
     publishedAt: "2025-06-16T00:00:00.000Z",
@@ -137,22 +132,22 @@ async function fetchTextWithFallback(url: string): Promise<string | null> {
   const headers = { "user-agent": "BQFILMS/1.0 (+nextjs)" };
 
   try {
-    const res = await fetch(url, {
+    const response = await fetch(url, {
       next: { revalidate: 3600 },
       headers,
     });
-    if (res.ok) return await res.text();
+    if (response.ok) return await response.text();
   } catch {
     // ignore
   }
 
   try {
     const jinaUrl = `https://r.jina.ai/${url}`;
-    const res = await fetch(jinaUrl, {
+    const response = await fetch(jinaUrl, {
       next: { revalidate: 3600 },
       headers,
     });
-    if (res.ok) return await res.text();
+    if (response.ok) return await response.text();
   } catch {
     // ignore
   }

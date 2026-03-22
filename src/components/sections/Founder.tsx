@@ -16,7 +16,7 @@ export default function Founder() {
           className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16"
         >
           <div className="relative">
-            <div className="aspect-[3/4] rounded-2xl bg-bq-gray overflow-hidden relative">
+            <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-bq-gray">
               <div className="absolute inset-0 bg-gradient-to-t from-bq-black/60 to-transparent" />
               <Image
                 src="/images/founder/buti-portrait-v2.png"
@@ -31,30 +31,29 @@ export default function Founder() {
           </div>
 
           <div>
-            <p className="text-bq-accent text-sm uppercase tracking-[0.3em] mb-4">
+            <p className="mb-4 text-sm uppercase tracking-[0.3em] text-bq-accent">
               Основатель
             </p>
-            <h2 className="text-3xl sm:text-4xl font-bold leading-tight">
-              Бақ-Даулет
+            <h2 className="text-3xl font-bold leading-tight sm:text-4xl">
+              Бак-Даулет
               <br />
               Абжатов
             </h2>
-            <p className="mt-6 text-bq-muted leading-relaxed">
-              Режиссёр, продюсер, предприниматель. Основатель BQ-экосистемы,
-              включающей BQ Media, BQ Rental, BQ Store, BQ Studio и BQ
-              Production. Практик индустрии, который создал систему возможностей
-              для creators и брендов в Казахстане.
+            <p className="mt-6 leading-relaxed text-bq-muted">
+              Режиссер, продюсер и предприниматель. Он собрал BQ как систему, в
+              которой съемка, техника, студия и production не спорят друг с
+              другом, а работают как одна команда.
             </p>
-            <p className="mt-4 text-bq-muted leading-relaxed">
-              Идейный лидер, стоящий за каждым направлением BQ &mdash;
-              от свадебной съёмки до собственных сериалов.
+            <p className="mt-4 leading-relaxed text-bq-muted">
+              Такой подход помогает держать скорость и качество - от частной
+              съемки и брендовых роликов до оригинальных проектов и сериалов.
             </p>
             <div className="mt-8 flex items-center gap-4">
               <a
                 href="https://www.instagram.com/butiabq"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-sm text-bq-muted hover:text-bq-accent transition-colors"
+                className="flex items-center gap-2 text-sm text-bq-muted transition-colors hover:text-bq-accent"
               >
                 <Instagram size={16} />
                 @butiabq

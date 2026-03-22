@@ -1,7 +1,15 @@
 import Link from "next/link";
-import { Instagram, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import {
+  Instagram,
+  Mail,
+  MapPin,
+  MessageCircle,
+  Phone,
+} from "lucide-react";
 import WordmarkLogo from "@/components/WordmarkLogo";
 import {
+  CONTACT_EMAIL,
+  CONTACT_LOCATIONS,
   CONTACT_PHONE_DISPLAY,
   CONTACT_PHONE_HREF,
   INSTAGRAM_PROFILES,
@@ -12,31 +20,31 @@ import {
 export default function Footer() {
   return (
     <footer className="border-t border-white/5 bg-bq-dark">
-      <div className="mx-auto max-w-7xl px-6 py-16">
+      <div className="container-bq py-16">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <WordmarkLogo size="lg" />
             <p className="mt-4 text-sm leading-relaxed text-bq-muted">
-              Экосистема фото, видео и медиа в Казахстане. Снимаем, оснащаем,
-              записываем и продюсируем.
+              Снимаем, оснащаем и выпускаем проекты - от частных историй до
+              брендового контента и оригинальных форматов.
             </p>
           </div>
 
           <div>
             <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-bq-white/50">
-              Направления
+              Разделы
             </h4>
             <ul className="space-y-3">
-              {[...PRIMARY_NAV_LINKS, { href: "/cases", label: "Cases" }].map(
+              {[...PRIMARY_NAV_LINKS, { href: "/cases", label: "Кейсы" }].map(
                 (link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-bq-muted transition-colors hover:text-bq-accent"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-sm text-bq-muted transition-colors hover:text-bq-accent"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
                 )
               )}
             </ul>
@@ -47,14 +55,14 @@ export default function Footer() {
               Контакты
             </h4>
             <ul className="space-y-3 text-sm text-bq-muted">
-              <li className="flex items-center gap-2">
-                <MapPin size={14} className="shrink-0 text-bq-accent" />
-                <span>Алматы, Коктем-3, 24</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <MapPin size={14} className="shrink-0 text-bq-accent" />
-                <span>Астана, Бухар Жырау, 42</span>
-              </li>
+              {CONTACT_LOCATIONS.map((location) => (
+                <li key={location.city} className="flex items-start gap-2">
+                  <MapPin size={14} className="mt-0.5 shrink-0 text-bq-accent" />
+                  <span>
+                    {location.city}, {location.footerAddress}
+                  </span>
+                </li>
+              ))}
               <li className="flex items-center gap-2">
                 <Phone size={14} className="shrink-0 text-bq-accent" />
                 <a
@@ -72,16 +80,16 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="transition-colors hover:text-bq-accent"
                 >
-                  WhatsApp
+                  Написать в WhatsApp
                 </a>
               </li>
               <li className="flex items-center gap-2">
                 <Mail size={14} className="shrink-0 text-bq-accent" />
                 <a
-                  href="mailto:info@bqmedia.kz"
+                  href={`mailto:${CONTACT_EMAIL}`}
                   className="transition-colors hover:text-bq-accent"
                 >
-                  info@bqmedia.kz
+                  {CONTACT_EMAIL}
                 </a>
               </li>
             </ul>
@@ -89,7 +97,7 @@ export default function Footer() {
 
           <div>
             <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-bq-white/50">
-              Социальные сети
+              Instagram
             </h4>
             <ul className="space-y-3">
               {INSTAGRAM_PROFILES.map((social) => (
@@ -111,7 +119,7 @@ export default function Footer() {
 
         <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-white/5 pt-8 md:flex-row">
           <p className="text-xs text-bq-muted">
-            &copy; {new Date().getFullYear()} BQ Ecosystem. Все права защищены.
+            &copy; {new Date().getFullYear()} BQ. Все права защищены.
           </p>
           <a
             href="https://www.instagram.com/butiabq"
@@ -119,7 +127,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             className="text-xs text-bq-muted transition-colors hover:text-bq-accent"
           >
-            Основатель: Бақ-Даулет Абжатов
+            Основатель: Бак-Даулет Абжатов
           </a>
         </div>
       </div>

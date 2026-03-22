@@ -2,38 +2,44 @@
 
 import { motion } from "framer-motion";
 import {
-  Layers,
-  Wrench,
-  Users,
-  Zap,
+  BadgeCheck,
   Globe,
+  Layers,
+  Users,
+  Wrench,
+  Zap,
 } from "lucide-react";
 
 const advantages = [
   {
     icon: Layers,
-    title: "Единая экосистема",
-    desc: "Всё под одной крышей: съёмка, техника, студия, магазин и собственные проекты.",
+    title: "Один подрядчик вместо пяти",
+    desc: "Съемка, техника, студия и продакшн собраны в одной системе, поэтому проект движется ровнее и быстрее.",
   },
   {
     icon: Wrench,
-    title: "Техника + команда + площадка",
-    desc: "Полный цикл: от идеи до готового продукта без привлечения сторонних подрядчиков.",
-  },
-  {
-    icon: Users,
-    title: "Бренды и частные клиенты",
-    desc: "Работаем с бизнесом, парами, creators, экспертами и продакшн-командами.",
+    title: "Техника и команда рядом",
+    desc: "Не нужно отдельно искать оборудование, площадку и исполнителей - основные ресурсы уже внутри BQ.",
   },
   {
     icon: Zap,
-    title: "Creator-first подход",
-    desc: "Мы сами создатели контента и понимаем задачи creators изнутри.",
+    title: "Быстрый старт",
+    desc: "Можно быстро выйти в подготовку, согласовать формат и приступить к съемке без лишней бюрократии.",
+  },
+  {
+    icon: Users,
+    title: "Подходим и брендам, и частным клиентам",
+    desc: "Работаем с бизнесом, экспертами, парами, авторами и командами, которым нужен понятный результат.",
   },
   {
     icon: Globe,
-    title: "Казахстан. Локальная экспертиза",
-    desc: "Алматы и Астана. Казахоязычная идентичность. Знание рынка.",
+    title: "Локальная подача для Казахстана",
+    desc: "Понимаем визуальный язык, ритм и ожидания аудитории в Алматы, Астане и шире по рынку.",
+  },
+  {
+    icon: BadgeCheck,
+    title: "Доводим до готового выпуска",
+    desc: "Помогаем не только снять, но и собрать, оформить, упаковать и выпустить материал без ощущения незавершенности.",
   },
 ];
 
@@ -46,34 +52,34 @@ export default function WhyBQ() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="mb-16 text-center"
         >
-          <p className="text-bq-accent text-sm uppercase tracking-[0.3em] mb-4">
-            Преимущества
-          </p>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
+          <p className="mb-4 text-sm uppercase tracking-[0.3em] text-bq-accent">
             Почему BQ
+          </p>
+          <h2 className="text-3xl font-bold sm:text-4xl lg:text-5xl">
+            С нами удобно запускать и доводить проекты
           </h2>
         </motion.div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {advantages.map((adv, i) => (
+          {advantages.map((advantage, index) => (
             <motion.div
-              key={adv.title}
+              key={advantage.title}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="rounded-2xl border border-white/5 p-6 transition-all duration-500 hover:border-bq-accent/20"
+              transition={{ duration: 0.5, delay: index * 0.08 }}
+              className="rounded-2xl border border-white/5 bg-white/[0.03] p-6 transition-all duration-300 hover:border-bq-accent/20 hover:bg-white/[0.05]"
             >
-              <adv.icon
+              <advantage.icon
                 size={28}
-                className="text-bq-accent mb-4"
+                className="mb-4 text-bq-accent"
                 strokeWidth={1.5}
               />
-              <h3 className="text-lg font-semibold mb-2">{adv.title}</h3>
-              <p className="text-bq-muted text-sm leading-relaxed">
-                {adv.desc}
+              <h3 className="mb-2 text-lg font-semibold">{advantage.title}</h3>
+              <p className="text-sm leading-relaxed text-bq-muted">
+                {advantage.desc}
               </p>
             </motion.div>
           ))}

@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
-import "./globals.css";
-import PageTransition from "@/components/PageTransition";
 import { Inter, Manrope } from "next/font/google";
+import PageTransition from "@/components/PageTransition";
+import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://bqmedia-kz.vercel.app"),
   title: {
-    default: "BQ — Экосистема фото, видео и медиа в Казахстане",
+    default: "BQ - съемка, продакшн и студийные проекты в Казахстане",
     template: "%s | BQ",
   },
   description:
-    "BQ объединяет продакшн, аренду и продажу техники, подкаст-студии и оригинальные медиапроекты. Для брендов, creators и продакшн-команд.",
+    "BQ объединяет съемку, аренду и продажу техники, студию и продакшн для брендов, экспертов и частных проектов в Алматы и Астане.",
   keywords: [
     "видеосъемка Алматы",
     "продакшн Казахстан",
@@ -24,9 +24,9 @@ export const metadata: Metadata = {
     "BQ Production",
   ],
   openGraph: {
-    title: "BQ — Экосистема фото, видео и медиа в Казахстане",
+    title: "BQ - съемка, продакшн и студийные проекты в Казахстане",
     description:
-      "Снимаем, оснащаем, записываем и продюсируем. Всё в одной экосистеме.",
+      "Снимаем, оснащаем, записываем и выпускаем проекты - от love story и reels до сериалов и брендового контента.",
     type: "website",
   },
   alternates: {
@@ -61,7 +61,7 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <body
-        className={`antialiased ${fontSans.variable} ${fontDisplay.variable} font-sans`}
+        className={`font-sans antialiased ${fontSans.variable} ${fontDisplay.variable}`}
       >
         <PageTransition>{children}</PageTransition>
       </body>

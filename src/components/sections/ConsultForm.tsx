@@ -4,15 +4,7 @@ import { FormEvent, useState } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle, MessageCircle, Send } from "lucide-react";
 import { WHATSAPP_URL } from "@/lib/site";
-
-const services = [
-  "Съёмка (BQ Media)",
-  "Аренда техники (BQ Rental)",
-  "Покупка техники (BQ Store)",
-  "Подкаст-студия (BQ Studio)",
-  "Продакшн (BQ Production)",
-  "Другое",
-];
+import { SERVICE_OPTIONS } from "@/lib/services";
 
 type FormStatus = "idle" | "submitting" | "success" | "error";
 
@@ -20,12 +12,12 @@ export default function ConsultForm() {
   const [status, setStatus] = useState<FormStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
     setStatus("submitting");
     setErrorMessage("");
 
-    const form = e.currentTarget;
+    const form = event.currentTarget;
     const payload = {
       name: (form.elements.namedItem("name") as HTMLInputElement).value,
       phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
@@ -51,7 +43,7 @@ export default function ConsultForm() {
       if (!response.ok || !result.ok) {
         throw new Error(
           result.error ||
-            "Не удалось отправить заявку. Попробуйте ещё раз или напишите нам в WhatsApp."
+            "Не удалось отправить заявку. Попробуйте еще раз или напишите нам в WhatsApp."
         );
       }
 
@@ -62,7 +54,7 @@ export default function ConsultForm() {
       setErrorMessage(
         error instanceof Error
           ? error.message
-          : "Не удалось отправить заявку. Попробуйте ещё раз."
+          : "Не удалось отправить заявку. Попробуйте еще раз."
       );
     }
   }
@@ -78,7 +70,7 @@ export default function ConsultForm() {
             className="rounded-3xl border border-white/10 bg-white/5 p-8 sm:p-10"
           >
             <CheckCircle size={64} className="mx-auto mb-6 text-bq-accent" />
-            <h2 className="mb-4 text-3xl font-bold">Заявка отправлена</h2>
+            <h2 className="mb-4 text-3xl font-bold">Заявка принята</h2>
             <p className="text-bq-muted">
               Мы свяжемся с вами в ближайшее время. Если вопрос срочный, можно
               сразу написать нам в WhatsApp.
@@ -109,14 +101,14 @@ export default function ConsultForm() {
         >
           <div className="mb-10 text-center sm:mb-12">
             <p className="mb-4 text-sm uppercase tracking-[0.3em] text-bq-accent">
-              Связаться
+              Заявка
             </p>
             <h2 className="text-3xl font-bold sm:text-4xl lg:text-5xl">
-              Получить консультацию
+              Обсудить проект
             </h2>
             <p className="mt-4 text-bq-muted">
-              Расскажите о вашем проекте — мы подберём лучшее решение и быстро
-              свяжемся с вами.
+              Напишите пару деталей о задаче - мы быстро свяжемся с вами и
+              подскажем удобный формат работы.
             </p>
           </div>
 
@@ -181,7 +173,7 @@ export default function ConsultForm() {
                 <option value="" disabled>
                   Выберите направление
                 </option>
-                {services.map((service) => (
+                {SERVICE_OPTIONS.map((service) => (
                   <option key={service} value={service}>
                     {service}
                   </option>
@@ -191,7 +183,7 @@ export default function ConsultForm() {
 
             <div>
               <label htmlFor="message" className="label">
-                Сообщение
+                Коротко о задаче
               </label>
               <textarea
                 id="message"
@@ -199,12 +191,15 @@ export default function ConsultForm() {
                 rows={5}
                 maxLength={1200}
                 className="input min-h-[140px] resize-none"
-                placeholder="Коротко расскажите о задаче, сроках и городе съёмки."
+                placeholder="Опишите формат, сроки, город съемки или то, что хотите снять."
               />
             </div>
 
             {status === "error" ? (
-              <div className="rounded-2xl border border-red-400/20 bg-red-400/10 p-4 text-sm text-white/80">
+              <div
+                aria-live="polite"
+                className="rounded-2xl border border-red-400/20 bg-red-400/10 p-4 text-sm text-white/80"
+              >
                 <p>{errorMessage}</p>
                 <a
                   href={WHATSAPP_URL}
@@ -232,6 +227,10 @@ export default function ConsultForm() {
                 </>
               )}
             </button>
+
+            <p className="text-center text-sm text-bq-white/45">
+              Если удобнее, можно не заполнять форму, а сразу перейти в WhatsApp.
+            </p>
           </form>
         </motion.div>
       </div>

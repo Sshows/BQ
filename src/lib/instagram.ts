@@ -45,6 +45,7 @@ type InstagramTimelineResponse = {
 
 export type InstagramVideo = {
   id: string;
+  code: string;
   title: string;
   url: string;
   thumbnail: string;
@@ -56,7 +57,8 @@ export type InstagramVideo = {
 const fallbackVideos: InstagramVideo[] = [
   {
     id: "fallback-production-1",
-    title: "Backstage ролик с коммерческой съёмки",
+    code: "DI8Z3L5MNKz",
+    title: "Backstage коммерческой съемки",
     url: "https://www.instagram.com/reel/DI8Z3L5MNKz/",
     thumbnail: "/images/instagram/bq-production-1.jpg",
     publishedAt: "2025-04-27T08:46:56.000Z",
@@ -65,6 +67,7 @@ const fallbackVideos: InstagramVideo[] = [
   },
   {
     id: "fallback-production-2",
+    code: "DIOlYOAMzZp",
     title: "Little Brazil",
     url: "https://www.instagram.com/reel/DIOlYOAMzZp/",
     thumbnail: "/images/instagram/bq-production-2.jpg",
@@ -74,6 +77,7 @@ const fallbackVideos: InstagramVideo[] = [
   },
   {
     id: "fallback-production-3",
+    code: "DILy6aRsDNT",
     title: "Commercial video Hyundai",
     url: "https://www.instagram.com/reel/DILy6aRsDNT/",
     thumbnail: "/images/instagram/bq-production-3.jpg",
@@ -83,7 +87,8 @@ const fallbackVideos: InstagramVideo[] = [
   },
   {
     id: "fallback-production-4",
-    title: "BQ Studio пакеттері",
+    code: "DRoXennCLjO",
+    title: "BQ Studio: пакеты и форматы",
     url: "https://www.instagram.com/reel/DRoXennCLjO/",
     thumbnail: "/images/instagram/bq-production-4.jpg",
     publishedAt: "2025-11-29T06:45:28.000Z",
@@ -92,6 +97,7 @@ const fallbackVideos: InstagramVideo[] = [
   },
   {
     id: "fallback-production-5",
+    code: "DMPeo-XCRjJ",
     title: "Commercial for YaYa",
     url: "https://www.instagram.com/reel/DMPeo-XCRjJ/",
     thumbnail: "/images/instagram/bq-production-5.jpg",
@@ -101,6 +107,7 @@ const fallbackVideos: InstagramVideo[] = [
   },
   {
     id: "fallback-production-6",
+    code: "DJePcGtM8Hk",
     title: "Taycan cinematic drive",
     url: "https://www.instagram.com/reel/DJePcGtM8Hk/",
     thumbnail: "/images/instagram/bq-production-6.jpg",
@@ -109,6 +116,16 @@ const fallbackVideos: InstagramVideo[] = [
     sourceUrl: BQ_PRODUCTION_INSTAGRAM.href,
   },
 ];
+
+function extractInstagramCode(value?: string | null) {
+  if (!value) return null;
+
+  const trimmed = value.trim();
+  const fromUrl = trimmed.match(/\/(?:reel|p)\/([^/?#]+)/)?.[1];
+  if (fromUrl) return fromUrl.trim();
+
+  return trimmed.match(/^[\w-]+$/)?.[0] ?? null;
+}
 
 function getPrimaryImage(
   imageVersions?: InstagramImageVersions,
@@ -137,12 +154,13 @@ function hasVideoContent(item: InstagramTimelineItem) {
 }
 
 function buildInstagramPostUrl(item: InstagramTimelineItem) {
-  if (!item.code) return null;
+  const code = extractInstagramCode(item.code);
+  if (!code) return null;
 
   const postType =
     item.product_type === "clips" || item.media_type === 2 ? "reel" : "p";
 
-  return `https://www.instagram.com/${postType}/${item.code}/`;
+  return `https://www.instagram.com/${postType}/${code}/`;
 }
 
 function buildInstagramTitle(
@@ -166,6 +184,35 @@ function sortVideos(videos: InstagramVideo[]) {
   });
 }
 
+function isGenericTitle(title: string, sourceLabel: string) {
+  return title.trim() === `Новое видео ${sourceLabel}`;
+}
+
+function getVideoKey(video: InstagramVideo) {
+  return (
+    extractInstagramCode(video.code) ||
+    extractInstagramCode(video.url) ||
+    video.id
+  );
+}
+
+function mergeVideoRecord(existing: InstagramVideo, incoming: InstagramVideo) {
+  return {
+    id: incoming.id || existing.id,
+    code: incoming.code || existing.code,
+    title:
+      isGenericTitle(incoming.title, incoming.sourceLabel) &&
+      !isGenericTitle(existing.title, existing.sourceLabel)
+        ? existing.title
+        : incoming.title,
+    url: incoming.url || existing.url,
+    thumbnail: incoming.thumbnail || existing.thumbnail,
+    publishedAt: incoming.publishedAt || existing.publishedAt,
+    sourceLabel: incoming.sourceLabel || existing.sourceLabel,
+    sourceUrl: incoming.sourceUrl || existing.sourceUrl,
+  } satisfies InstagramVideo;
+}
+
 function normalizeTimelineItem(
   item: InstagramTimelineItem,
   profile: InstagramProfile
@@ -174,10 +221,12 @@ function normalizeTimelineItem(
 
   const thumbnail = getPrimaryImage(item.image_versions2, item.carousel_media);
   const url = buildInstagramPostUrl(item);
-  if (!thumbnail || !url) return null;
+  const code = extractInstagramCode(item.code) || extractInstagramCode(url);
+  if (!thumbnail || !url || !code) return null;
 
   return {
-    id: item.id?.trim() || item.code?.trim() || url,
+    id: item.id?.trim() || code || url,
+    code,
     title: buildInstagramTitle(item.caption, profile.label),
     url,
     thumbnail,
@@ -191,7 +240,7 @@ function normalizeTimelineItem(
 
 async function fetchProfileVideos(
   profile: InstagramProfile,
-  count = 6
+  count = 12
 ): Promise<InstagramVideo[]> {
   try {
     const timelineUrl = `https://www.instagram.com/api/v1/feed/user/${encodeURIComponent(
@@ -213,11 +262,9 @@ async function fetchProfileVideos(
 
     const data = (await timelineResponse.json()) as InstagramTimelineResponse;
 
-    const items = (data.items ?? [])
+    return (data.items ?? [])
       .map((item) => normalizeTimelineItem(item, profile))
       .filter((item): item is InstagramVideo => item !== null);
-
-    return items;
   } catch {
     return [];
   }
@@ -227,19 +274,22 @@ function mergeVideos(primary: InstagramVideo[], fallback: InstagramVideo[]) {
   const unique = new Map<string, InstagramVideo>();
 
   for (const video of fallback) {
-    unique.set(video.id, video);
+    unique.set(getVideoKey(video), video);
   }
 
   for (const video of primary) {
-    unique.set(video.id, video);
+    const key = getVideoKey(video);
+    const existing = unique.get(key);
+    unique.set(key, existing ? mergeVideoRecord(existing, video) : video);
   }
 
   return sortVideos(Array.from(unique.values()));
 }
 
 export async function getInstagramVideos(limit = 6) {
+  const count = Math.max(limit * 2, 12);
   const liveVideos = await Promise.all(
-    FEED_PROFILES.map((profile) => fetchProfileVideos(profile, limit))
+    FEED_PROFILES.map((profile) => fetchProfileVideos(profile, count))
   );
 
   return mergeVideos(liveVideos.flat(), fallbackVideos).slice(0, limit);

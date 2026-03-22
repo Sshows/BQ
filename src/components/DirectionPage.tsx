@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { ReactNode } from "react";
 
 interface DirectionPageProps {
   badge: string;
@@ -93,17 +93,17 @@ export default function DirectionPage({
       <section className="section-pad bg-bq-dark">
         <div className="container-bq max-w-6xl">
           <h2 className="mb-12 text-center text-3xl font-bold sm:mb-16">
-            Что мы предлагаем
+            Что входит в направление
           </h2>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {features.map((feature, i) => (
+            {features.map((feature, index) => (
               <motion.div
                 key={feature.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="rounded-2xl border border-white/5 p-6 transition-all duration-500 hover:border-bq-accent/20"
+                transition={{ duration: 0.5, delay: index * 0.08 }}
+                className="rounded-2xl border border-white/5 bg-white/[0.03] p-6 transition-all duration-300 hover:border-bq-accent/20 hover:bg-white/[0.05]"
               >
                 <h3 className="mb-2 text-lg font-semibold">{feature.title}</h3>
                 <p className="text-sm leading-relaxed text-bq-muted">
@@ -117,18 +117,16 @@ export default function DirectionPage({
 
       <section className="section-pad bg-bq-black">
         <div className="container-bq max-w-3xl">
-          <h2 className="mb-12 text-center text-3xl font-bold">
-            Частые вопросы
-          </h2>
+          <h2 className="mb-12 text-center text-3xl font-bold">Частые вопросы</h2>
           <div className="space-y-6">
-            {faq.map((item, i) => (
+            {faq.map((item, index) => (
               <motion.div
                 key={item.q}
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.08 }}
-                className="rounded-2xl border border-white/5 p-6"
+                transition={{ duration: 0.4, delay: index * 0.08 }}
+                className="rounded-2xl border border-white/5 bg-white/[0.03] p-6"
               >
                 <h3 className="mb-2 font-semibold">{item.q}</h3>
                 <p className="text-sm leading-relaxed text-bq-muted">
@@ -142,12 +140,13 @@ export default function DirectionPage({
 
       <section className="section-pad bg-bq-dark text-center">
         <div className="container-bq max-w-2xl">
-          <h2 className="mb-4 text-3xl font-bold">Готовы начать?</h2>
+          <h2 className="mb-4 text-3xl font-bold">Готовы обсудить проект?</h2>
           <p className="mb-8 text-bq-muted">
-            Свяжитесь с нами для обсуждения вашего проекта.
+            Расскажите задачу, формат и город съемки - мы быстро предложим
+            удобное решение.
           </p>
           <Link href="/#consult" className="btn btn-primary">
-            Получить консультацию
+            Оставить заявку
             <ArrowRight size={14} />
           </Link>
         </div>

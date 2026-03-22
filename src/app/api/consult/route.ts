@@ -1,18 +1,11 @@
 import { NextResponse } from "next/server";
+import { SERVICE_OPTIONS_SET } from "@/lib/services";
 
 export const runtime = "nodejs";
 
-const allowedServices = new Set([
-  "Съёмка (BQ Media)",
-  "Аренда техники (BQ Rental)",
-  "Покупка техники (BQ Store)",
-  "Подкаст-студия (BQ Studio)",
-  "Продакшн (BQ Production)",
-  "Другое",
-]);
-
 function sanitizeText(value: unknown, maxLength: number) {
   return String(value ?? "")
+    .replace(/[<>]/g, " ")
     .replace(/\s+/g, " ")
     .trim()
     .slice(0, maxLength);
@@ -62,7 +55,7 @@ export async function POST(request: Request) {
     );
   }
 
-  if (!allowedServices.has(service)) {
+  if (!SERVICE_OPTIONS_SET.has(service)) {
     return NextResponse.json(
       { ok: false, error: "Выберите направление." },
       { status: 400 }
@@ -76,6 +69,12 @@ export async function POST(request: Request) {
     message,
     source: "bqmedia-site",
     submittedAt: new Date().toISOString(),
+    referrer: sanitizeText(request.headers.get("referer"), 200),
+    userAgent: sanitizeText(request.headers.get("user-agent"), 200),
+    ip: sanitizeText(
+      request.headers.get("x-forwarded-for")?.split(",")[0] ?? "",
+      80
+    ),
   };
 
   const googleSheetsUrl =
@@ -108,20 +107,23 @@ export async function POST(request: Request) {
         {
           ok: false,
           error:
-            "Сервис временно недоступен. Попробуйте ещё раз чуть позже.",
+            "Сервис временно недоступен. Попробуйте еще раз чуть позже.",
         },
         { status: 502 }
       );
     }
 
     return NextResponse.json({ ok: true, storage: "google-sheets" });
-  } catch {
+  } catch (error) {
     clearTimeout(timeout);
 
     return NextResponse.json(
       {
         ok: false,
-        error: "Не удалось отправить заявку. Попробуйте ещё раз.",
+        error:
+          error instanceof Error && error.name === "AbortError"
+            ? "Ответ от сервиса занял слишком много времени. Попробуйте еще раз."
+            : "Не удалось отправить заявку. Попробуйте еще раз.",
       },
       { status: 502 }
     );
