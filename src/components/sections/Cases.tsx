@@ -13,13 +13,6 @@ const cases = [
     href: "/media",
   },
   {
-    title: "Бренд-видео Exclusive Qurylys",
-    category: "BQ Media",
-    tag: "Commercial",
-    image: "/images/portfolio/stock/exclusive-qurylys.jpg",
-    href: "/media",
-  },
-  {
     title: "Сериал «Дос емес»",
     category: "BQ Production",
     tag: "Original",
@@ -27,25 +20,11 @@ const cases = [
     href: "/production",
   },
   {
-    title: "Корпоративный видеопортрет",
-    category: "BQ Media",
-    tag: "Corporate",
-    image: "/images/portfolio/stock/corporate-video-portrait.jpg",
-    href: "/media",
-  },
-  {
     title: "Подкаст-интервью",
     category: "BQ Studio",
     tag: "Podcast",
     image: "/images/founder/buti-onset-v2.png",
     href: "/studio",
-  },
-  {
-    title: "Emir Med - имиджевый ролик",
-    category: "BQ Media",
-    tag: "Commercial",
-    image: "/images/portfolio/stock/emir-med.jpg",
-    href: "/media",
   },
 ];
 

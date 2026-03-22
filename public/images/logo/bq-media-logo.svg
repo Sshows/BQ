@@ -1,0 +1,20 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="256" cy="256" r="248" fill="#082142" />
+  <g stroke="#C8A46D" stroke-width="18" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M148 146V366" />
+    <path d="M148 288C148 224 197 178 257 178C318 178 367 227 367 288C367 349 318 398 257 398C197 398 148 352 148 288Z" />
+    <path d="M251 288C251 224 301 178 362 178C423 178 472 227 472 288C472 349 423 398 362 398C301 398 251 352 251 288Z" />
+    <path d="M432 184V434" />
+  </g>
+  <text
+    x="256"
+    y="456"
+    text-anchor="middle"
+    fill="#C8A46D"
+    font-family="Arial, Helvetica, sans-serif"
+    font-size="42"
+    letter-spacing="14"
+  >
+    MEDIA
+  </text>
+</svg>

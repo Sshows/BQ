@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Instagram, Phone, MapPin, Mail } from "lucide-react";
+import { Instagram, Phone, MapPin, Mail, MessageCircle } from "lucide-react";
+import BrandLogo from "@/components/BrandLogo";
 
 const directions = [
   { href: "/media", label: "BQ Media" },
@@ -16,8 +17,16 @@ const socials = [
     label: "BQ Media",
     icon: Instagram,
   },
-  { href: "https://www.instagram.com/bqrental", label: "BQ Rental", icon: Instagram },
-  { href: "https://www.instagram.com/bqstorekz", label: "BQ Store", icon: Instagram },
+  {
+    href: "https://www.instagram.com/bqrental",
+    label: "BQ Rental",
+    icon: Instagram,
+  },
+  {
+    href: "https://www.instagram.com/bqstorekz",
+    label: "BQ Store",
+    icon: Instagram,
+  },
   {
     href: "https://www.instagram.com/bqstudio_astana",
     label: "BQ Studio",
@@ -30,23 +39,31 @@ const socials = [
   },
 ];
 
+const phoneDisplay = "+7 707 049 05 55";
+const phoneHref = "tel:+77070490555";
+const whatsappHref =
+  "https://wa.me/77070490555?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%BE%D0%B1%D1%81%D1%83%D0%B4%D0%B8%D1%82%D1%8C%20%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%20%D1%81%20BQ%20Media.";
+
 export default function Footer() {
   return (
-    <footer className="bg-bq-dark border-t border-white/5">
-      <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+    <footer className="border-t border-white/5 bg-bq-dark">
+      <div className="mx-auto max-w-7xl px-6 py-16">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div>
-            <Link href="/" className="text-3xl font-bold tracking-tight">
-              <span className="text-bq-accent">BQ</span>
-            </Link>
-            <p className="mt-4 text-bq-muted text-sm leading-relaxed">
+            <BrandLogo
+              className="inline-flex items-center"
+              imageClassName="h-20 w-20 object-contain"
+              width={80}
+              height={80}
+            />
+            <p className="mt-4 text-sm leading-relaxed text-bq-muted">
               Экосистема фото, видео и медиа в Казахстане. Снимаем, оснащаем,
               записываем и продюсируем.
             </p>
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-bq-white/50 mb-4">
+            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-bq-white/50">
               Направления
             </h4>
             <ul className="space-y-3">
@@ -54,7 +71,7 @@ export default function Footer() {
                 <li key={d.href}>
                   <Link
                     href={d.href}
-                    className="text-bq-muted hover:text-bq-accent transition-colors text-sm"
+                    className="text-sm text-bq-muted transition-colors hover:text-bq-accent"
                   >
                     {d.label}
                   </Link>
@@ -64,27 +81,44 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-bq-white/50 mb-4">
+            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-bq-white/50">
               Контакты
             </h4>
             <ul className="space-y-3 text-sm text-bq-muted">
               <li className="flex items-center gap-2">
-                <MapPin size={14} className="text-bq-accent shrink-0" />
+                <MapPin size={14} className="shrink-0 text-bq-accent" />
                 <span>Алматы, Коктем-3, 24</span>
               </li>
               <li className="flex items-center gap-2">
-                <MapPin size={14} className="text-bq-accent shrink-0" />
+                <MapPin size={14} className="shrink-0 text-bq-accent" />
                 <span>Астана, Бухар Жырау, 42</span>
               </li>
               <li className="flex items-center gap-2">
-                <Phone size={14} className="text-bq-accent shrink-0" />
-                <a href="tel:+77001234567" className="hover:text-bq-accent transition-colors">
-                  +7 700 123 45 67
+                <Phone size={14} className="shrink-0 text-bq-accent" />
+                <a
+                  href={phoneHref}
+                  className="transition-colors hover:text-bq-accent"
+                >
+                  {phoneDisplay}
                 </a>
               </li>
               <li className="flex items-center gap-2">
-                <Mail size={14} className="text-bq-accent shrink-0" />
-                <a href="mailto:info@bqmedia.kz" className="hover:text-bq-accent transition-colors">
+                <MessageCircle size={14} className="shrink-0 text-bq-accent" />
+                <a
+                  href={whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-colors hover:text-bq-accent"
+                >
+                  WhatsApp
+                </a>
+              </li>
+              <li className="flex items-center gap-2">
+                <Mail size={14} className="shrink-0 text-bq-accent" />
+                <a
+                  href="mailto:info@bqmedia.kz"
+                  className="transition-colors hover:text-bq-accent"
+                >
                   info@bqmedia.kz
                 </a>
               </li>
@@ -92,7 +126,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-bq-white/50 mb-4">
+            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-bq-white/50">
               Социальные сети
             </h4>
             <ul className="space-y-3">
@@ -102,7 +136,7 @@ export default function Footer() {
                     href={s.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-sm text-bq-muted hover:text-bq-accent transition-colors"
+                    className="flex items-center gap-2 text-sm text-bq-muted transition-colors hover:text-bq-accent"
                   >
                     <s.icon size={14} />
                     {s.label}
@@ -113,15 +147,15 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-bq-muted text-xs">
+        <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-white/5 pt-8 md:flex-row">
+          <p className="text-xs text-bq-muted">
             &copy; {new Date().getFullYear()} BQ Ecosystem. Все права защищены.
           </p>
           <a
             href="https://www.instagram.com/butiabq"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-bq-muted text-xs hover:text-bq-accent transition-colors"
+            className="text-xs text-bq-muted transition-colors hover:text-bq-accent"
           >
             Основатель: Бақ-Даулет Абжатов
           </a>

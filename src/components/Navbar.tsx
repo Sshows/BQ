@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
+import BrandLogo from "@/components/BrandLogo";
 
 const navLinks = [
   { href: "/media", label: "BQ Media" },
@@ -20,16 +21,21 @@ export default function Navbar() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass">
-      <div className="container-bq py-4 flex items-center justify-between">
-        <Link href="/" className="text-2xl font-bold tracking-tight">
-          <span className="text-bq-accent">BQ</span>
-        </Link>
+    <nav className="fixed left-0 right-0 top-0 z-50 glass">
+      <div className="container-bq flex items-center justify-between py-4">
+        <BrandLogo
+          className="flex items-center"
+          imageClassName="h-14 w-14 object-contain"
+          width={56}
+          height={56}
+          priority
+        />
 
-        <div className="hidden lg:flex items-center gap-8">
+        <div className="hidden items-center gap-8 lg:flex">
           {navLinks.map((link) => {
             const isHash = link.href.startsWith("/#");
             const isActive = !isHash && pathname === link.href;
+
             return (
               <Link
                 key={link.href}
@@ -45,17 +51,14 @@ export default function Navbar() {
               </Link>
             );
           })}
-          <Link
-            href="/#consult"
-            className="ml-4 btn btn-primary"
-          >
+          <Link href="/#consult" className="btn btn-primary ml-4">
             Консультация
           </Link>
         </div>
 
         <button
           onClick={() => setOpen(!open)}
-          className="lg:hidden text-bq-white/70 hover:text-bq-accent transition-colors rounded-lg p-2"
+          className="rounded-lg p-2 text-bq-white/70 transition-colors hover:text-bq-accent lg:hidden"
           aria-label="Toggle menu"
           aria-expanded={open}
         >
@@ -64,17 +67,18 @@ export default function Navbar() {
       </div>
 
       {open && (
-        <div className="lg:hidden glass border-t border-white/10">
-          <div className="container-bq py-6 flex flex-col gap-3">
+        <div className="glass border-t border-white/10 lg:hidden">
+          <div className="container-bq flex flex-col gap-3 py-6">
             {navLinks.map((link) => {
               const isHash = link.href.startsWith("/#");
               const isActive = !isHash && pathname === link.href;
+
               return (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className={`rounded-xl px-4 py-3 transition-colors text-base ${
+                  className={`rounded-xl px-4 py-3 text-base transition-colors ${
                     isActive
                       ? "bg-white/5 text-bq-accent"
                       : "text-bq-white/80 hover:bg-white/5 hover:text-bq-accent"
@@ -88,7 +92,7 @@ export default function Navbar() {
             <Link
               href="/#consult"
               onClick={() => setOpen(false)}
-              className="mt-2 btn btn-primary w-full"
+              className="btn btn-primary mt-2 w-full"
             >
               Консультация
             </Link>

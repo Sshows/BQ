@@ -16,26 +16,31 @@ const locations = [
   },
 ];
 
+const phoneDisplay = "+7 707 049 05 55";
+const phoneHref = "tel:+77070490555";
+const whatsappHref =
+  "https://wa.me/77070490555?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%BE%D0%B1%D1%81%D1%83%D0%B4%D0%B8%D1%82%D1%8C%20%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%20%D1%81%20BQ%20Media.";
+
 export default function Contact() {
   return (
-    <section id="contact" className="py-32 bg-bq-dark">
-      <div className="max-w-6xl mx-auto px-6">
+    <section id="contact" className="bg-bq-dark py-32">
+      <div className="mx-auto max-w-6xl px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="mb-16 text-center"
         >
-          <p className="text-bq-accent text-sm uppercase tracking-[0.3em] mb-4">
+          <p className="mb-4 text-sm uppercase tracking-[0.3em] text-bq-accent">
             Где мы
           </p>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
+          <h2 className="text-3xl font-bold sm:text-4xl lg:text-5xl">
             Контакты и города
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           {locations.map((loc, i) => (
             <motion.div
               key={loc.city}
@@ -43,30 +48,30 @@ export default function Contact() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="p-8 rounded-2xl border border-white/5 bg-bq-black/50"
+              className="rounded-2xl border border-white/5 bg-bq-black/50 p-8"
             >
-              <h3 className="text-2xl font-bold mb-4">{loc.city}</h3>
-              <div className="space-y-3 text-bq-muted text-sm">
+              <h3 className="mb-4 text-2xl font-bold">{loc.city}</h3>
+              <div className="space-y-3 text-sm text-bq-muted">
                 <p className="flex items-start gap-2">
                   <MapPin
                     size={16}
-                    className="text-bq-accent shrink-0 mt-0.5"
+                    className="mt-0.5 shrink-0 text-bq-accent"
                   />
                   {loc.address}
                 </p>
                 <p className="flex items-start gap-2">
                   <Clock
                     size={16}
-                    className="text-bq-accent shrink-0 mt-0.5"
+                    className="mt-0.5 shrink-0 text-bq-accent"
                   />
-                  Пн-Сб: 10:00 &ndash; 20:00
+                  Пн-Сб: 10:00 - 20:00
                 </p>
               </div>
               <div className="mt-6 flex flex-wrap gap-2">
                 {loc.services.map((s) => (
                   <span
                     key={s}
-                    className="px-3 py-1 text-xs rounded-full border border-bq-accent/20 text-bq-accent"
+                    className="rounded-full border border-bq-accent/20 px-3 py-1 text-xs text-bq-accent"
                   >
                     {s}
                   </span>
@@ -83,22 +88,22 @@ export default function Contact() {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="mt-12 text-center"
         >
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-bq-muted text-sm">
+          <div className="flex flex-col items-center justify-center gap-6 text-sm text-bq-muted sm:flex-row">
             <a
-              href="tel:+77001234567"
-              className="flex items-center gap-2 hover:text-bq-accent transition-colors"
+              href={phoneHref}
+              className="flex items-center gap-2 transition-colors hover:text-bq-accent"
             >
               <Phone size={16} className="text-bq-accent" />
-              +7 700 123 45 67
+              {phoneDisplay}
             </a>
             <a
-              href="https://wa.me/77001234567"
+              href={whatsappHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 hover:text-bq-accent transition-colors"
+              className="flex items-center gap-2 rounded-full border border-bq-accent/25 bg-bq-accent/10 px-5 py-3 font-medium text-bq-white transition-colors hover:border-bq-accent hover:text-bq-accent"
             >
               <MessageCircle size={16} className="text-bq-accent" />
-              WhatsApp
+              Написать в WhatsApp
             </a>
           </div>
         </motion.div>
