@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { unstable_noStore as noStore } from "next/cache";
 import { ArrowRight, Instagram } from "lucide-react";
 import {
   formatInstagramDate,
@@ -13,6 +14,7 @@ type InstagramFeedGalleryProps = {
 export default async function InstagramFeedGallery({
   limit = 6,
 }: InstagramFeedGalleryProps) {
+  noStore();
   const videos = await getInstagramVideos(limit);
 
   return (
