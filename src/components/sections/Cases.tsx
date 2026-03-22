@@ -16,7 +16,7 @@ const cases = [
     title: "Бренд-видео Exclusive Qurylys",
     category: "BQ Media",
     tag: "Commercial",
-    image: "/images/portfolio/bqmedia/portfolio-1.png",
+    image: "/images/portfolio/stock/exclusive-qurylys.jpg",
     href: "/media",
   },
   {
@@ -30,7 +30,7 @@ const cases = [
     title: "Корпоративный видеопортрет",
     category: "BQ Media",
     tag: "Corporate",
-    image: "/images/portfolio/bqmedia/portfolio-4.png",
+    image: "/images/portfolio/stock/corporate-video-portrait.jpg",
     href: "/media",
   },
   {
@@ -44,7 +44,7 @@ const cases = [
     title: "Emir Med - имиджевый ролик",
     category: "BQ Media",
     tag: "Commercial",
-    image: "/images/portfolio/bqmedia/portfolio-6.png",
+    image: "/images/portfolio/stock/emir-med.jpg",
     href: "/media",
   },
 ];
