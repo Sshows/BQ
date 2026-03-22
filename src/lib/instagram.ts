@@ -111,26 +111,6 @@ const fallbackVideos: InstagramVideo[] = [
   },
 ];
 
-function getSetCookies(headers: Headers) {
-  const extended = headers as Headers & {
-    getSetCookie?: () => string[];
-  };
-
-  if (typeof extended.getSetCookie === "function") {
-    return extended.getSetCookie();
-  }
-
-  const cookie = headers.get("set-cookie");
-  return cookie ? [cookie] : [];
-}
-
-function buildSessionCookie(setCookies: string[]) {
-  return setCookies
-    .map((value) => value.split(";", 1)[0]?.trim())
-    .filter(Boolean)
-    .join("; ");
-}
-
 function getPrimaryImage(
   imageVersions?: InstagramImageVersions,
   carouselMedia?: InstagramTimelineItem["carousel_media"]
@@ -215,16 +195,6 @@ async function fetchProfileVideos(
   count = 6
 ): Promise<InstagramVideo[]> {
   try {
-    const profileResponse = await fetch(profile.href, {
-      next: { revalidate: INSTAGRAM_REVALIDATE_SECONDS },
-      headers: INSTAGRAM_HEADERS,
-    });
-
-    if (!profileResponse.ok) return [];
-
-    const cookie = buildSessionCookie(getSetCookies(profileResponse.headers));
-    if (!cookie) return [];
-
     const timelineUrl = `https://www.instagram.com/api/v1/feed/user/${encodeURIComponent(
       profile.handle
     )}/username/?count=${count}`;
@@ -233,7 +203,7 @@ async function fetchProfileVideos(
       next: { revalidate: INSTAGRAM_REVALIDATE_SECONDS },
       headers: {
         ...INSTAGRAM_HEADERS,
-        cookie,
+        cookie: "csrftoken=bqmedia",
         referer: profile.href,
         "x-ig-app-id": INSTAGRAM_APP_ID,
         "x-requested-with": "XMLHttpRequest",
