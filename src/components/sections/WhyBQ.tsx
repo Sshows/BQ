@@ -39,8 +39,8 @@ const advantages = [
 
 export default function WhyBQ() {
   return (
-    <section className="py-32 bg-bq-black">
-      <div className="max-w-6xl mx-auto px-6">
+    <section className="section-pad bg-bq-black">
+      <div className="container-bq max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -56,7 +56,7 @@ export default function WhyBQ() {
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {advantages.map((adv, i) => (
             <motion.div
               key={adv.title}
@@ -64,7 +64,7 @@ export default function WhyBQ() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="p-6 rounded-xl border border-white/5 hover:border-bq-accent/20 transition-all duration-500"
+              className="rounded-2xl border border-white/5 p-6 transition-all duration-500 hover:border-bq-accent/20"
             >
               <adv.icon
                 size={28}

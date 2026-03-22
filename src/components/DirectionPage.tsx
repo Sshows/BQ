@@ -32,12 +32,14 @@ export default function DirectionPage({
 }: DirectionPageProps) {
   return (
     <div className="min-h-screen bg-bq-black">
-      <section className="relative pt-32 pb-20 overflow-hidden">
-        <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-30`} />
-        <div className="relative z-10 max-w-5xl mx-auto px-6">
+      <section className="relative overflow-hidden pb-16 pt-28 sm:pb-20 sm:pt-32">
+        <div
+          className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-30`}
+        />
+        <div className="container-bq relative z-10 max-w-5xl">
           <Link
             href="/#directions"
-            className="inline-flex items-center gap-2 text-sm text-bq-muted hover:text-bq-accent transition-colors mb-8"
+            className="mb-8 inline-flex items-center gap-2 text-sm text-bq-muted transition-colors hover:text-bq-accent"
           >
             <ArrowLeft size={14} />
             Все направления
@@ -48,39 +50,39 @@ export default function DirectionPage({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
           >
-            <p className="text-bq-accent text-sm uppercase tracking-[0.3em] mb-4">
+            <p className="mb-4 text-sm uppercase tracking-[0.3em] text-bq-accent">
               {badge}
             </p>
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold leading-[0.95] tracking-tight">
+            <h1 className="text-4xl font-bold leading-[0.95] tracking-tight sm:text-5xl lg:text-7xl">
               {title}
             </h1>
-            <p className="mt-4 text-xl sm:text-2xl text-bq-white/60 font-light">
+            <p className="mt-4 text-lg font-light text-bq-white/60 sm:text-2xl">
               {subtitle}
             </p>
-            <p className="mt-6 text-bq-muted max-w-2xl leading-relaxed">
+            <p className="mt-6 max-w-2xl leading-relaxed text-bq-muted">
               {description}
             </p>
 
-            <div className="mt-8 flex flex-col sm:flex-row gap-4">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4">
               <Link
                 href={cta.href}
                 target={cta.target}
                 rel={cta.rel}
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-bq-accent text-bq-black font-semibold rounded hover:bg-amber-400 transition-all duration-300 text-sm"
+                className="btn btn-primary w-full sm:w-auto"
               >
                 {cta.label}
                 <ArrowRight size={14} />
               </Link>
-              {secondaryCta && (
+              {secondaryCta ? (
                 <Link
                   href={secondaryCta.href}
                   target={secondaryCta.target}
                   rel={secondaryCta.rel}
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 border border-white/20 text-bq-white/80 font-medium rounded hover:border-bq-accent hover:text-bq-accent transition-all duration-300 text-sm"
+                  className="btn btn-ghost w-full sm:w-auto"
                 >
                   {secondaryCta.label}
                 </Link>
-              )}
+              ) : null}
             </div>
           </motion.div>
         </div>
@@ -88,46 +90,48 @@ export default function DirectionPage({
 
       {children}
 
-      <section className="py-24 bg-bq-dark">
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center mb-16">
+      <section className="section-pad bg-bq-dark">
+        <div className="container-bq max-w-6xl">
+          <h2 className="mb-12 text-center text-3xl font-bold sm:mb-16">
             Что мы предлагаем
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((f, i) => (
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {features.map((feature, i) => (
               <motion.div
-                key={f.title}
+                key={feature.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="p-6 rounded-xl border border-white/5 hover:border-bq-accent/20 transition-all duration-500"
+                className="rounded-2xl border border-white/5 p-6 transition-all duration-500 hover:border-bq-accent/20"
               >
-                <h3 className="text-lg font-semibold mb-2">{f.title}</h3>
-                <p className="text-bq-muted text-sm leading-relaxed">{f.desc}</p>
+                <h3 className="mb-2 text-lg font-semibold">{feature.title}</h3>
+                <p className="text-sm leading-relaxed text-bq-muted">
+                  {feature.desc}
+                </p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-24 bg-bq-black">
-        <div className="max-w-3xl mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center mb-12">
+      <section className="section-pad bg-bq-black">
+        <div className="container-bq max-w-3xl">
+          <h2 className="mb-12 text-center text-3xl font-bold">
             Частые вопросы
           </h2>
           <div className="space-y-6">
             {faq.map((item, i) => (
               <motion.div
-                key={i}
+                key={item.q}
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.08 }}
-                className="p-6 rounded-xl border border-white/5"
+                className="rounded-2xl border border-white/5 p-6"
               >
-                <h3 className="font-semibold mb-2">{item.q}</h3>
-                <p className="text-bq-muted text-sm leading-relaxed">
+                <h3 className="mb-2 font-semibold">{item.q}</h3>
+                <p className="text-sm leading-relaxed text-bq-muted">
                   {item.a}
                 </p>
               </motion.div>
@@ -136,16 +140,13 @@ export default function DirectionPage({
         </div>
       </section>
 
-      <section className="py-20 bg-bq-dark text-center">
-        <div className="max-w-2xl mx-auto px-6">
-          <h2 className="text-3xl font-bold mb-4">Готовы начать?</h2>
-          <p className="text-bq-muted mb-8">
-            Свяжитесь с нами для обсуждения вашего проекта
+      <section className="section-pad bg-bq-dark text-center">
+        <div className="container-bq max-w-2xl">
+          <h2 className="mb-4 text-3xl font-bold">Готовы начать?</h2>
+          <p className="mb-8 text-bq-muted">
+            Свяжитесь с нами для обсуждения вашего проекта.
           </p>
-          <Link
-            href="/#consult"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-bq-accent text-bq-black font-semibold rounded hover:bg-amber-400 transition-all duration-300"
-          >
+          <Link href="/#consult" className="btn btn-primary">
             Получить консультацию
             <ArrowRight size={14} />
           </Link>

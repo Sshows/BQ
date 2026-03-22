@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 
 export default function About() {
   return (
-    <section id="about" className="py-32 bg-bq-dark">
-      <div className="max-w-5xl mx-auto px-6">
+    <section id="about" className="section-pad bg-bq-dark">
+      <div className="container-bq max-w-5xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -29,7 +29,7 @@ export default function About() {
           </p>
         </motion.div>
 
-        <div className="mt-20 grid grid-cols-2 sm:grid-cols-4 gap-8 text-center">
+        <div className="mt-16 grid grid-cols-2 gap-8 text-center sm:mt-20 sm:grid-cols-4">
           {[
             { value: "5", label: "направлений" },
             { value: "215+", label: "единиц техники" },

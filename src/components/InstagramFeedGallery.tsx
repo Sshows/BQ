@@ -18,8 +18,8 @@ export default async function InstagramFeedGallery({
   const videos = await getInstagramVideos(limit);
 
   return (
-    <section className="bg-bq-black py-24">
-      <div className="mx-auto max-w-7xl px-6">
+    <section className="section-pad bg-bq-black">
+      <div className="container-bq">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-bq-white/70">
@@ -46,7 +46,7 @@ export default async function InstagramFeedGallery({
           </Link>
         </div>
 
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {videos.map((video) => {
             const publishedLabel = formatInstagramDate(video.publishedAt);
 

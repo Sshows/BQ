@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { FormEvent, useState } from "react";
 import { motion } from "framer-motion";
-import { Send, CheckCircle } from "lucide-react";
+import { CheckCircle, MessageCircle, Send } from "lucide-react";
+import { WHATSAPP_URL } from "@/lib/site";
 
 const services = [
   "Съёмка (BQ Media)",
@@ -13,55 +14,84 @@ const services = [
   "Другое",
 ];
 
+type FormStatus = "idle" | "submitting" | "success" | "error";
+
 export default function ConsultForm() {
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<FormStatus>("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setLoading(true);
+    setStatus("submitting");
+    setErrorMessage("");
 
     const form = e.currentTarget;
-    const data = {
+    const payload = {
       name: (form.elements.namedItem("name") as HTMLInputElement).value,
       phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
       service: (form.elements.namedItem("service") as HTMLSelectElement).value,
       message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
-      date: new Date().toLocaleString("ru-RU"),
+      company: (form.elements.namedItem("company") as HTMLInputElement).value,
     };
 
     try {
-      const sheetUrl = process.env.NEXT_PUBLIC_GOOGLE_SHEETS_URL;
-      if (sheetUrl) {
-        await fetch(sheetUrl, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        });
+      const response = await fetch("/api/consult", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const result = (await response.json()) as {
+        ok?: boolean;
+        error?: string;
+      };
+
+      if (!response.ok || !result.ok) {
+        throw new Error(
+          result.error ||
+            "Не удалось отправить заявку. Попробуйте ещё раз или напишите нам в WhatsApp."
+        );
       }
-      setSubmitted(true);
-    } catch {
-      setSubmitted(true);
-    } finally {
-      setLoading(false);
+
+      form.reset();
+      setStatus("success");
+    } catch (error) {
+      setStatus("error");
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "Не удалось отправить заявку. Попробуйте ещё раз."
+      );
     }
   }
 
-  if (submitted) {
+  if (status === "success") {
     return (
-      <section id="consult" className="py-32 bg-bq-black">
-        <div className="max-w-2xl mx-auto px-6 text-center">
+      <section id="consult" className="section-pad bg-bq-black">
+        <div className="container-bq max-w-2xl text-center">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.45 }}
+            className="rounded-3xl border border-white/10 bg-white/5 p-8 sm:p-10"
           >
-            <CheckCircle size={64} className="text-bq-accent mx-auto mb-6" />
-            <h2 className="text-3xl font-bold mb-4">Заявка отправлена</h2>
+            <CheckCircle size={64} className="mx-auto mb-6 text-bq-accent" />
+            <h2 className="mb-4 text-3xl font-bold">Заявка отправлена</h2>
             <p className="text-bq-muted">
-              Мы свяжемся с вами в ближайшее время. Спасибо за интерес к BQ!
+              Мы свяжемся с вами в ближайшее время. Если вопрос срочный, можно
+              сразу написать нам в WhatsApp.
             </p>
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-primary mt-8 w-full sm:w-auto"
+            >
+              <MessageCircle size={16} />
+              Написать в WhatsApp
+            </a>
           </motion.div>
         </div>
       </section>
@@ -69,33 +99,40 @@ export default function ConsultForm() {
   }
 
   return (
-    <section id="consult" className="py-32 bg-bq-black">
-      <div className="max-w-2xl mx-auto px-6">
+    <section id="consult" className="section-pad bg-bq-black">
+      <div className="container-bq max-w-2xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <div className="text-center mb-12">
-            <p className="text-bq-accent text-sm uppercase tracking-[0.3em] mb-4">
+          <div className="mb-10 text-center sm:mb-12">
+            <p className="mb-4 text-sm uppercase tracking-[0.3em] text-bq-accent">
               Связаться
             </p>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
+            <h2 className="text-3xl font-bold sm:text-4xl lg:text-5xl">
               Получить консультацию
             </h2>
             <p className="mt-4 text-bq-muted">
-              Расскажите о вашем проекте &mdash; мы подберём лучшее решение
+              Расскажите о вашем проекте — мы подберём лучшее решение и быстро
+              свяжемся с вами.
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <input
+              type="text"
+              id="company"
+              name="company"
+              tabIndex={-1}
+              autoComplete="off"
+              className="hidden"
+            />
+
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
               <div>
-                <label
-                  htmlFor="name"
-                  className="label"
-                >
+                <label htmlFor="name" className="label">
                   Имя
                 </label>
                 <input
@@ -103,15 +140,16 @@ export default function ConsultForm() {
                   id="name"
                   name="name"
                   required
+                  minLength={2}
+                  maxLength={80}
+                  autoComplete="name"
                   className="input"
                   placeholder="Ваше имя"
                 />
               </div>
+
               <div>
-                <label
-                  htmlFor="phone"
-                  className="label"
-                >
+                <label htmlFor="phone" className="label">
                   Телефон
                 </label>
                 <input
@@ -119,56 +157,73 @@ export default function ConsultForm() {
                   id="phone"
                   name="phone"
                   required
+                  minLength={10}
+                  maxLength={30}
+                  inputMode="tel"
+                  autoComplete="tel"
                   className="input"
-                  placeholder="+7 ..."
+                  placeholder="+7 707 000 00 00"
                 />
               </div>
             </div>
 
             <div>
-              <label
-                htmlFor="service"
-                className="label"
-              >
+              <label htmlFor="service" className="label">
                 Направление
               </label>
               <select
                 id="service"
                 name="service"
                 required
+                defaultValue=""
                 className="input appearance-none"
               >
-                <option value="">Выберите направление</option>
-                {services.map((s) => (
-                  <option key={s} value={s}>
-                    {s}
+                <option value="" disabled>
+                  Выберите направление
+                </option>
+                {services.map((service) => (
+                  <option key={service} value={service}>
+                    {service}
                   </option>
                 ))}
               </select>
             </div>
 
             <div>
-              <label
-                htmlFor="message"
-                className="label"
-              >
+              <label htmlFor="message" className="label">
                 Сообщение
               </label>
               <textarea
                 id="message"
                 name="message"
-                rows={4}
-                className="input resize-none"
-                placeholder="Расскажите о вашем проекте..."
+                rows={5}
+                maxLength={1200}
+                className="input min-h-[140px] resize-none"
+                placeholder="Коротко расскажите о задаче, сроках и городе съёмки."
               />
             </div>
 
+            {status === "error" ? (
+              <div className="rounded-2xl border border-red-400/20 bg-red-400/10 p-4 text-sm text-white/80">
+                <p>{errorMessage}</p>
+                <a
+                  href={WHATSAPP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-flex items-center gap-2 text-bq-accent"
+                >
+                  <MessageCircle size={16} />
+                  Написать в WhatsApp
+                </a>
+              </div>
+            ) : null}
+
             <button
               type="submit"
-              disabled={loading}
-              className="btn btn-primary w-full py-4 disabled:opacity-50"
+              disabled={status === "submitting"}
+              className="btn btn-primary w-full disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {loading ? (
+              {status === "submitting" ? (
                 "Отправка..."
               ) : (
                 <>

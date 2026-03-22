@@ -23,8 +23,8 @@ const locations = [
 
 export default function Contact() {
   return (
-    <section id="contact" className="bg-bq-dark py-32">
-      <div className="mx-auto max-w-6xl px-6">
+    <section id="contact" className="section-pad bg-bq-dark">
+      <div className="container-bq max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -40,7 +40,7 @@ export default function Contact() {
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
           {locations.map((loc, i) => (
             <motion.div
               key={loc.city}
@@ -48,7 +48,7 @@ export default function Contact() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="rounded-2xl border border-white/5 bg-bq-black/50 p-8"
+              className="rounded-2xl border border-white/5 bg-bq-black/50 p-6 sm:p-8"
             >
               <h3 className="mb-4 text-2xl font-bold">{loc.city}</h3>
               <div className="space-y-3 text-sm text-bq-muted">

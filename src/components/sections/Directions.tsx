@@ -56,8 +56,8 @@ const directions = [
 
 export default function Directions() {
   return (
-    <section id="directions" className="bg-bq-black py-32">
-      <div className="max-w-7xl mx-auto px-6">
+    <section id="directions" className="section-pad bg-bq-black">
+      <div className="container-bq">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -73,7 +73,7 @@ export default function Directions() {
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {directions.map((dir, i) => (
             <motion.div
               key={dir.title}
@@ -84,7 +84,7 @@ export default function Directions() {
             >
               <Link
                 href={dir.href}
-                className={`group block h-full rounded-2xl border border-white/5 bg-gradient-to-br p-8 transition-all duration-500 hover-lift hover:border-bq-accent/30 ${dir.accent}`}
+                className={`group block h-full rounded-2xl border border-white/5 bg-gradient-to-br p-6 transition-all duration-500 hover-lift hover:border-bq-accent/30 sm:p-8 ${dir.accent}`}
               >
                 <dir.icon
                   size={32}

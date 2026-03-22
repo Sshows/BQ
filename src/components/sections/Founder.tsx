@@ -6,14 +6,14 @@ import { Instagram } from "lucide-react";
 
 export default function Founder() {
   return (
-    <section className="py-32 bg-bq-dark">
-      <div className="max-w-5xl mx-auto px-6">
+    <section className="section-pad bg-bq-dark">
+      <div className="container-bq max-w-5xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"
+          className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16"
         >
           <div className="relative">
             <div className="aspect-[3/4] rounded-2xl bg-bq-gray overflow-hidden relative">
@@ -27,7 +27,7 @@ export default function Founder() {
                 priority
               />
             </div>
-            <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-bq-accent/10 rounded-full blur-2xl" />
+            <div className="absolute -bottom-3 -right-3 h-20 w-20 rounded-full bg-bq-accent/10 blur-2xl sm:-bottom-4 sm:-right-4 sm:h-24 sm:w-24" />
           </div>
 
           <div>

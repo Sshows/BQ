@@ -42,8 +42,8 @@ export default function Cases({
   description,
 }: CasesProps) {
   return (
-    <section id={id} className="bg-bq-dark py-32">
-      <div className="mx-auto max-w-7xl px-6">
+    <section id={id} className="section-pad bg-bq-dark">
+      <div className="container-bq">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -64,7 +64,7 @@ export default function Cases({
           ) : null}
         </motion.div>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {caseItems.map((item, i) => (
             <motion.div
               key={item.title}
