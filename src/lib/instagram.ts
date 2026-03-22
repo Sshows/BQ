@@ -1,5 +1,4 @@
 import {
-  BQ_MEDIA_INSTAGRAM,
   BQ_PRODUCTION_INSTAGRAM,
   type InstagramProfile,
 } from "@/lib/site";
@@ -12,7 +11,7 @@ const INSTAGRAM_HEADERS = {
   "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
 } as const;
 
-const FEED_PROFILES = [BQ_PRODUCTION_INSTAGRAM, BQ_MEDIA_INSTAGRAM];
+const FEED_PROFILES = [BQ_PRODUCTION_INSTAGRAM];
 
 type InstagramCaption = {
   text?: string;
@@ -57,57 +56,57 @@ export type InstagramVideo = {
 const fallbackVideos: InstagramVideo[] = [
   {
     id: "fallback-production-1",
-    title: "Backstage коммерческой съёмки",
-    url: BQ_PRODUCTION_INSTAGRAM.href,
-    thumbnail: "/images/founder/buti-onset-v2.png",
-    publishedAt: "2026-03-01T00:00:00.000Z",
+    title: "Backstage ролик с коммерческой съёмки",
+    url: "https://www.instagram.com/reel/DI8Z3L5MNKz/",
+    thumbnail: "/images/instagram/bq-production-1.jpg",
+    publishedAt: "2025-04-27T08:46:56.000Z",
     sourceLabel: BQ_PRODUCTION_INSTAGRAM.label,
     sourceUrl: BQ_PRODUCTION_INSTAGRAM.href,
-  },
-  {
-    id: "fallback-media-1",
-    title: "Love Story",
-    url: BQ_MEDIA_INSTAGRAM.href,
-    thumbnail: "/images/portfolio/lovestory-1.jpg",
-    publishedAt: "2026-02-16T00:00:00.000Z",
-    sourceLabel: BQ_MEDIA_INSTAGRAM.label,
-    sourceUrl: BQ_MEDIA_INSTAGRAM.href,
-  },
-  {
-    id: "fallback-media-2",
-    title: "Wedding highlights",
-    url: BQ_MEDIA_INSTAGRAM.href,
-    thumbnail: "/images/portfolio/wedding-2.jpg",
-    publishedAt: "2026-02-05T00:00:00.000Z",
-    sourceLabel: BQ_MEDIA_INSTAGRAM.label,
-    sourceUrl: BQ_MEDIA_INSTAGRAM.href,
   },
   {
     id: "fallback-production-2",
-    title: "Съёмка в студии",
-    url: BQ_PRODUCTION_INSTAGRAM.href,
-    thumbnail: "/images/founder/buti-onset.png",
-    publishedAt: "2026-01-29T00:00:00.000Z",
+    title: "Little Brazil",
+    url: "https://www.instagram.com/reel/DIOlYOAMzZp/",
+    thumbnail: "/images/instagram/bq-production-2.jpg",
+    publishedAt: "2025-04-09T13:42:37.000Z",
     sourceLabel: BQ_PRODUCTION_INSTAGRAM.label,
     sourceUrl: BQ_PRODUCTION_INSTAGRAM.href,
   },
   {
-    id: "fallback-media-3",
-    title: "Портретная история",
-    url: BQ_MEDIA_INSTAGRAM.href,
-    thumbnail: "/images/portfolio/bqmedia/portfolio-3.png",
-    publishedAt: "2026-01-18T00:00:00.000Z",
-    sourceLabel: BQ_MEDIA_INSTAGRAM.label,
-    sourceUrl: BQ_MEDIA_INSTAGRAM.href,
+    id: "fallback-production-3",
+    title: "Commercial video Hyundai",
+    url: "https://www.instagram.com/reel/DILy6aRsDNT/",
+    thumbnail: "/images/instagram/bq-production-3.jpg",
+    publishedAt: "2025-04-08T11:43:44.000Z",
+    sourceLabel: BQ_PRODUCTION_INSTAGRAM.label,
+    sourceUrl: BQ_PRODUCTION_INSTAGRAM.href,
   },
   {
-    id: "fallback-media-4",
-    title: "Съёмка для пары",
-    url: BQ_MEDIA_INSTAGRAM.href,
-    thumbnail: "/images/portfolio/bqmedia/portfolio-6.png",
-    publishedAt: "2026-01-03T00:00:00.000Z",
-    sourceLabel: BQ_MEDIA_INSTAGRAM.label,
-    sourceUrl: BQ_MEDIA_INSTAGRAM.href,
+    id: "fallback-production-4",
+    title: "BQ Studio пакеттері",
+    url: "https://www.instagram.com/reel/DRoXennCLjO/",
+    thumbnail: "/images/instagram/bq-production-4.jpg",
+    publishedAt: "2025-11-29T06:45:28.000Z",
+    sourceLabel: BQ_PRODUCTION_INSTAGRAM.label,
+    sourceUrl: BQ_PRODUCTION_INSTAGRAM.href,
+  },
+  {
+    id: "fallback-production-5",
+    title: "Commercial for YaYa",
+    url: "https://www.instagram.com/reel/DMPeo-XCRjJ/",
+    thumbnail: "/images/instagram/bq-production-5.jpg",
+    publishedAt: "2025-07-18T08:15:32.000Z",
+    sourceLabel: BQ_PRODUCTION_INSTAGRAM.label,
+    sourceUrl: BQ_PRODUCTION_INSTAGRAM.href,
+  },
+  {
+    id: "fallback-production-6",
+    title: "Taycan cinematic drive",
+    url: "https://www.instagram.com/reel/DJePcGtM8Hk/",
+    thumbnail: "/images/instagram/bq-production-6.jpg",
+    publishedAt: "2025-05-10T12:16:45.000Z",
+    sourceLabel: BQ_PRODUCTION_INSTAGRAM.label,
+    sourceUrl: BQ_PRODUCTION_INSTAGRAM.href,
   },
 ];
 
