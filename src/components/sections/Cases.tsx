@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
-const cases = [
+export const caseItems = [
   {
     title: "Love Story",
     category: "BQ Media",
@@ -28,9 +28,21 @@ const cases = [
   },
 ];
 
-export default function Cases() {
+type CasesProps = {
+  id?: string;
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+};
+
+export default function Cases({
+  id = "cases",
+  eyebrow = "Портфолио",
+  title = "Избранные проекты",
+  description,
+}: CasesProps) {
   return (
-    <section id="cases" className="bg-bq-dark py-32">
+    <section id={id} className="bg-bq-dark py-32">
       <div className="mx-auto max-w-7xl px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -40,15 +52,20 @@ export default function Cases() {
           className="mb-16 text-center"
         >
           <p className="mb-4 text-sm uppercase tracking-[0.3em] text-bq-accent">
-            Портфолио
+            {eyebrow}
           </p>
           <h2 className="text-3xl font-bold sm:text-4xl lg:text-5xl">
-            Избранные проекты
+            {title}
           </h2>
+          {description ? (
+            <p className="mx-auto mt-4 max-w-2xl text-bq-muted">
+              {description}
+            </p>
+          ) : null}
         </motion.div>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {cases.map((item, i) => (
+          {caseItems.map((item, i) => (
             <motion.div
               key={item.title}
               initial={{ opacity: 0, y: 30 }}

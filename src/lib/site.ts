@@ -59,10 +59,12 @@ export const PRIMARY_NAV_LINKS = [
 
 export const NAV_LINKS = [
   ...PRIMARY_NAV_LINKS,
+  { href: "/cases", label: "Cases" },
   { href: "/#contact", label: "Контакты" },
 ];
 
 export const SITEMAP_ROUTES = [
   "/",
   ...PRIMARY_NAV_LINKS.map((link) => link.href),
+  "/cases",
 ];

@@ -47,7 +47,7 @@ export default function MediaPage() {
           },
         ]}
         cta={{ label: "Обсудить съёмку", href: "/#consult" }}
-        secondaryCta={{ label: "Посмотреть кейсы", href: "/#cases" }}
+        secondaryCta={{ label: "Посмотреть кейсы", href: "/cases" }}
         faq={[
           {
             q: "Сколько стоит съёмка?",

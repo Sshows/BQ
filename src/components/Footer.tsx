@@ -27,7 +27,8 @@ export default function Footer() {
               Направления
             </h4>
             <ul className="space-y-3">
-              {PRIMARY_NAV_LINKS.map((link) => (
+              {[...PRIMARY_NAV_LINKS, { href: "/cases", label: "Cases" }].map(
+                (link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
@@ -36,7 +37,8 @@ export default function Footer() {
                     {link.label}
                   </Link>
                 </li>
-              ))}
+                )
+              )}
             </ul>
           </div>
 
