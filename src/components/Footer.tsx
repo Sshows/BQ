@@ -4,37 +4,10 @@ import WordmarkLogo from "@/components/WordmarkLogo";
 import {
   CONTACT_PHONE_DISPLAY,
   CONTACT_PHONE_HREF,
+  INSTAGRAM_PROFILES,
   PRIMARY_NAV_LINKS,
   WHATSAPP_URL,
 } from "@/lib/site";
-
-const socials = [
-  {
-    href: "https://www.instagram.com/bqmediakz",
-    label: "BQ Media",
-    icon: Instagram,
-  },
-  {
-    href: "https://www.instagram.com/bqrental",
-    label: "BQ Rental",
-    icon: Instagram,
-  },
-  {
-    href: "https://www.instagram.com/bqstorekz",
-    label: "BQ Store",
-    icon: Instagram,
-  },
-  {
-    href: "https://www.instagram.com/bqstudio_astana",
-    label: "BQ Studio",
-    icon: Instagram,
-  },
-  {
-    href: "https://www.instagram.com/bq_production.kz",
-    label: "BQ Production",
-    icon: Instagram,
-  },
-];
 
 export default function Footer() {
   return (
@@ -117,7 +90,7 @@ export default function Footer() {
               Социальные сети
             </h4>
             <ul className="space-y-3">
-              {socials.map((social) => (
+              {INSTAGRAM_PROFILES.map((social) => (
                 <li key={social.href}>
                   <a
                     href={social.href}
@@ -125,7 +98,7 @@ export default function Footer() {
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 text-sm text-bq-muted transition-colors hover:text-bq-accent"
                   >
-                    <social.icon size={14} />
+                    <Instagram size={14} />
                     {social.label}
                   </a>
                 </li>
