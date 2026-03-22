@@ -1,15 +1,12 @@
 import Link from "next/link";
-import { Instagram, Phone, MapPin, Mail, MessageCircle } from "lucide-react";
-import BrandLogo from "@/components/BrandLogo";
-
-const directions = [
-  { href: "/media", label: "BQ Media" },
-  { href: "/rental", label: "BQ Rental" },
-  { href: "/store", label: "BQ Store" },
-  { href: "/studio", label: "BQ Studio" },
-  { href: "/production", label: "BQ Production" },
-  { href: "/bqfilms", label: "BQFILMS" },
-];
+import { Instagram, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import WordmarkLogo from "@/components/WordmarkLogo";
+import {
+  CONTACT_PHONE_DISPLAY,
+  CONTACT_PHONE_HREF,
+  PRIMARY_NAV_LINKS,
+  WHATSAPP_URL,
+} from "@/lib/site";
 
 const socials = [
   {
@@ -39,23 +36,13 @@ const socials = [
   },
 ];
 
-const phoneDisplay = "+7 707 049 05 55";
-const phoneHref = "tel:+77070490555";
-const whatsappHref =
-  "https://wa.me/77070490555?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%BE%D0%B1%D1%81%D1%83%D0%B4%D0%B8%D1%82%D1%8C%20%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%20%D1%81%20BQ%20Media.";
-
 export default function Footer() {
   return (
     <footer className="border-t border-white/5 bg-bq-dark">
       <div className="mx-auto max-w-7xl px-6 py-16">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div>
-            <BrandLogo
-              className="inline-flex items-center"
-              imageClassName="h-20 w-20 object-contain"
-              width={80}
-              height={80}
-            />
+            <WordmarkLogo size="lg" />
             <p className="mt-4 text-sm leading-relaxed text-bq-muted">
               Экосистема фото, видео и медиа в Казахстане. Снимаем, оснащаем,
               записываем и продюсируем.
@@ -67,13 +54,13 @@ export default function Footer() {
               Направления
             </h4>
             <ul className="space-y-3">
-              {directions.map((d) => (
-                <li key={d.href}>
+              {PRIMARY_NAV_LINKS.map((link) => (
+                <li key={link.href}>
                   <Link
-                    href={d.href}
+                    href={link.href}
                     className="text-sm text-bq-muted transition-colors hover:text-bq-accent"
                   >
-                    {d.label}
+                    {link.label}
                   </Link>
                 </li>
               ))}
@@ -96,16 +83,16 @@ export default function Footer() {
               <li className="flex items-center gap-2">
                 <Phone size={14} className="shrink-0 text-bq-accent" />
                 <a
-                  href={phoneHref}
+                  href={CONTACT_PHONE_HREF}
                   className="transition-colors hover:text-bq-accent"
                 >
-                  {phoneDisplay}
+                  {CONTACT_PHONE_DISPLAY}
                 </a>
               </li>
               <li className="flex items-center gap-2">
                 <MessageCircle size={14} className="shrink-0 text-bq-accent" />
                 <a
-                  href={whatsappHref}
+                  href={WHATSAPP_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="transition-colors hover:text-bq-accent"
@@ -130,16 +117,16 @@ export default function Footer() {
               Социальные сети
             </h4>
             <ul className="space-y-3">
-              {socials.map((s) => (
-                <li key={s.href}>
+              {socials.map((social) => (
+                <li key={social.href}>
                   <a
-                    href={s.href}
+                    href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 text-sm text-bq-muted transition-colors hover:text-bq-accent"
                   >
-                    <s.icon size={14} />
-                    {s.label}
+                    <social.icon size={14} />
+                    {social.label}
                   </a>
                 </li>
               ))}

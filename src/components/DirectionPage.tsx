@@ -11,8 +11,8 @@ interface DirectionPageProps {
   subtitle: string;
   description: string;
   features: { title: string; desc: string }[];
-  cta: { label: string; href: string };
-  secondaryCta?: { label: string; href: string };
+  cta: { label: string; href: string; target?: string; rel?: string };
+  secondaryCta?: { label: string; href: string; target?: string; rel?: string };
   faq: { q: string; a: string }[];
   gradient: string;
   children?: ReactNode;
@@ -64,6 +64,8 @@ export default function DirectionPage({
             <div className="mt-8 flex flex-col sm:flex-row gap-4">
               <Link
                 href={cta.href}
+                target={cta.target}
+                rel={cta.rel}
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-bq-accent text-bq-black font-semibold rounded hover:bg-amber-400 transition-all duration-300 text-sm"
               >
                 {cta.label}
@@ -72,6 +74,8 @@ export default function DirectionPage({
               {secondaryCta && (
                 <Link
                   href={secondaryCta.href}
+                  target={secondaryCta.target}
+                  rel={secondaryCta.rel}
                   className="inline-flex items-center justify-center gap-2 px-8 py-4 border border-white/20 text-bq-white/80 font-medium rounded hover:border-bq-accent hover:text-bq-accent transition-all duration-300 text-sm"
                 >
                   {secondaryCta.label}

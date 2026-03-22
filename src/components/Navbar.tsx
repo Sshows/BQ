@@ -4,17 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
-import BrandLogo from "@/components/BrandLogo";
-
-const navLinks = [
-  { href: "/media", label: "BQ Media" },
-  { href: "/rental", label: "BQ Rental" },
-  { href: "/store", label: "BQ Store" },
-  { href: "/studio", label: "BQ Studio" },
-  { href: "/production", label: "BQ Production" },
-  { href: "/bqfilms", label: "BQFILMS" },
-  { href: "/#contact", label: "Контакты" },
-];
+import WordmarkLogo from "@/components/WordmarkLogo";
+import { NAV_LINKS } from "@/lib/site";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -23,16 +14,10 @@ export default function Navbar() {
   return (
     <nav className="fixed left-0 right-0 top-0 z-50 glass">
       <div className="container-bq flex items-center justify-between py-4">
-        <BrandLogo
-          className="flex items-center"
-          imageClassName="h-14 w-14 object-contain"
-          width={56}
-          height={56}
-          priority
-        />
+        <WordmarkLogo />
 
         <div className="hidden items-center gap-8 lg:flex">
-          {navLinks.map((link) => {
+          {NAV_LINKS.map((link) => {
             const isHash = link.href.startsWith("/#");
             const isActive = !isHash && pathname === link.href;
 
@@ -69,7 +54,7 @@ export default function Navbar() {
       {open && (
         <div className="glass border-t border-white/10 lg:hidden">
           <div className="container-bq flex flex-col gap-3 py-6">
-            {navLinks.map((link) => {
+            {NAV_LINKS.map((link) => {
               const isHash = link.href.startsWith("/#");
               const isActive = !isHash && pathname === link.href;
 

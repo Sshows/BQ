@@ -2,6 +2,11 @@
 
 import { motion } from "framer-motion";
 import { MapPin, Phone, Clock, MessageCircle } from "lucide-react";
+import {
+  CONTACT_PHONE_DISPLAY,
+  CONTACT_PHONE_HREF,
+  WHATSAPP_URL,
+} from "@/lib/site";
 
 const locations = [
   {
@@ -15,11 +20,6 @@ const locations = [
     services: ["BQ Store", "BQ Studio"],
   },
 ];
-
-const phoneDisplay = "+7 707 049 05 55";
-const phoneHref = "tel:+77070490555";
-const whatsappHref =
-  "https://wa.me/77070490555?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%BE%D0%B1%D1%81%D1%83%D0%B4%D0%B8%D1%82%D1%8C%20%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%20%D1%81%20BQ%20Media.";
 
 export default function Contact() {
   return (
@@ -90,14 +90,14 @@ export default function Contact() {
         >
           <div className="flex flex-col items-center justify-center gap-6 text-sm text-bq-muted sm:flex-row">
             <a
-              href={phoneHref}
+              href={CONTACT_PHONE_HREF}
               className="flex items-center gap-2 transition-colors hover:text-bq-accent"
             >
               <Phone size={16} className="text-bq-accent" />
-              {phoneDisplay}
+              {CONTACT_PHONE_DISPLAY}
             </a>
             <a
-              href={whatsappHref}
+              href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 rounded-full border border-bq-accent/25 bg-bq-accent/10 px-5 py-3 font-medium text-bq-white transition-colors hover:border-bq-accent hover:text-bq-accent"
