@@ -1,14 +1,15 @@
-import Navbar from "@/components/Navbar";
-import Hero from "@/components/sections/Hero";
-import About from "@/components/sections/About";
-import Directions from "@/components/sections/Directions";
-import Cases from "@/components/sections/Cases";
-import InstagramFeedGallery from "@/components/InstagramFeedGallery";
-import WhyBQ from "@/components/sections/WhyBQ";
-import Founder from "@/components/sections/Founder";
-import ConsultForm from "@/components/sections/ConsultForm";
-import Contact from "@/components/sections/Contact";
 import Footer from "@/components/Footer";
+import InstagramFeedGallery from "@/components/InstagramFeedGallery";
+import Navbar from "@/components/Navbar";
+import About from "@/components/sections/About";
+import Cases from "@/components/sections/Cases";
+import Contact from "@/components/sections/Contact";
+import ConsultForm from "@/components/sections/ConsultForm";
+import Directions from "@/components/sections/Directions";
+import Founder from "@/components/sections/Founder";
+import Hero from "@/components/sections/Hero";
+import ProofSection from "@/components/sections/ProofSection";
+import WhyBQ from "@/components/sections/WhyBQ";
 
 export default function Home() {
   return (
@@ -19,6 +20,7 @@ export default function Home() {
         <About />
         <Directions />
         <Cases />
+        <ProofSection />
         <InstagramFeedGallery />
         <WhyBQ />
         <Founder />

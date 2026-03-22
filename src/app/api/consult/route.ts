@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { deliverLead } from "@/lib/lead";
 import { SERVICE_OPTIONS_SET } from "@/lib/services";
 
 export const runtime = "nodejs";
@@ -77,55 +78,21 @@ export async function POST(request: Request) {
     ),
   };
 
-  const googleSheetsUrl =
-    process.env.GOOGLE_SHEETS_URL?.trim() ||
-    process.env.NEXT_PUBLIC_GOOGLE_SHEETS_URL?.trim();
+  const delivery = await deliverLead(payload);
 
-  if (!googleSheetsUrl) {
-    return NextResponse.json({ ok: true, storage: "disabled" });
-  }
-
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 8000);
-
-  try {
-    const response = await fetch(googleSheetsUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json, text/plain, */*",
-      },
-      body: JSON.stringify(payload),
-      cache: "no-store",
-      signal: controller.signal,
-    });
-
-    clearTimeout(timeout);
-
-    if (!response.ok) {
-      return NextResponse.json(
-        {
-          ok: false,
-          error:
-            "Сервис временно недоступен. Попробуйте еще раз чуть позже.",
-        },
-        { status: 502 }
-      );
-    }
-
-    return NextResponse.json({ ok: true, storage: "google-sheets" });
-  } catch (error) {
-    clearTimeout(timeout);
-
+  if (!delivery.ok) {
     return NextResponse.json(
       {
         ok: false,
         error:
-          error instanceof Error && error.name === "AbortError"
-            ? "Ответ от сервиса занял слишком много времени. Попробуйте еще раз."
-            : "Не удалось отправить заявку. Попробуйте еще раз.",
+          "Не удалось доставить заявку. Попробуйте еще раз или продублируйте запрос в WhatsApp.",
       },
       { status: 502 }
     );
   }
+
+  return NextResponse.json({
+    ok: true,
+    channels: delivery.channels.length > 0 ? delivery.channels : ["disabled"],
+  });
 }
